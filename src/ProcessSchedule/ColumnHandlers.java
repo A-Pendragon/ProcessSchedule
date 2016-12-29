@@ -24,7 +24,7 @@ public class ColumnHandlers {
         Random random = new Random();
         
         for (int i = 0; i < table.getRowCount(); i++) {            
-            double randomValue = rangeMin + (rangeMax - rangeMin) * random.nextDouble();
+            double randomValue = rangeMin + (rangeMax - rangeMin) * random.nextDouble();            
             table.setValueAt(NumericHandlers.roundTo2DecimalPlaces(randomValue), i, column_index);
         }
     }

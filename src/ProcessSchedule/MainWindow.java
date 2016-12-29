@@ -845,7 +845,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
         type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));   // Sets index to a random number between 0 to max index.
         count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount())); // Sets index to a random number between 0 to max index.
-        System.out.println(NumericHandlers.randomRange(1.0, 1.0));
+        System.out.println(NumericHandlers.randomRange(1.0, 1.1));
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     /**
