@@ -313,10 +313,167 @@ public class MainWindow extends javax.swing.JFrame {
         priority_label.setEnabled(false);
         priority_comboBox.setEnabled(false);
         
+        // Set the time quantum label and textbox to disabled.
+        time_quantum_label.setEnabled(false);
+        time_quantum_textBox.setEnabled(false);
+        
         table.setModel(new DefaultTableModel(0, 0)); // Sets a null table as a default
     }
     //</editor-fold>
        
+    //<editor-fold defaultstate="collapsed" desc="Advance Options Handler">
+    private void advanceOptionsHandler() {
+        int at_index = at_comboBox.getSelectedIndex();
+        int bt_index = bt_comboBox.getSelectedIndex();
+        int priority_index = priority_comboBox.getSelectedIndex();
+        
+        // Remove all non numeric characters and spaces        
+        String at_first_str = NumericHandlers.removeAllNonNumeric(at_first_textField.getText());
+        String at_second_str = NumericHandlers.removeAllNonNumeric(at_second_textField.getText());
+        String bt_first_str = NumericHandlers.removeAllNonNumeric(bt_first_textField.getText());
+        String bt_second_str = NumericHandlers.removeAllNonNumeric(bt_second_textField.getText());        
+        
+        // Update the text fields
+        at_first_textField.setText(at_first_str);
+        at_second_textField.setText(at_second_str);
+        bt_first_textField.setText(bt_first_str);
+        bt_second_textField.setText(bt_second_str);
+        
+        // Convert string to double (this is done in the try catch below)
+        double at_first = 0;
+        double at_second = 0;
+        double bt_first = 0;
+        double bt_second = 0;
+        
+        // Try if the input is valid for conversion to double, catch sets the text field to null then sets error to true to stop the method from continuing.   
+        try { 
+            at_first = Double.parseDouble(at_first_str); 
+        } catch (NumberFormatException ex) { 
+            at_first_textField.setText(null); 
+        }
+        try { 
+            at_second = Double.parseDouble(at_second_str); 
+        } catch (NumberFormatException ex) { 
+            at_second_textField.setText(null); 
+        } 
+        try { 
+            bt_first = Double.parseDouble(bt_first_str); 
+        } catch (NumberFormatException ex) {
+            bt_first_textField.setText(null); 
+        }                       
+        try {
+            bt_second = Double.parseDouble(bt_second_str); 
+        } catch (NumberFormatException ex) {
+            bt_second_textField.setText(null); 
+        }                                
+        
+        /**
+         * case 0: none
+         * case 1: ascending
+         * case 2: descending
+         * case 3: randomize
+         */
+        
+        switch(at_index) {
+            case 0:
+                // do nothing
+                break;
+            case 1:
+                ColumnHandlers.setColumnToAscendingDouble(table, 1, at_first, at_second);
+                break;
+            case 2:
+                ColumnHandlers.setColumnToDescendingDouble(table, 1, at_first, at_second);
+                break;
+            case 3:                
+                ColumnHandlers.setColumnToRandomizeDouble(table, 1, at_first, at_second);
+                break;
+            default:
+                break;
+        }                   
+        
+        switch(bt_index) {
+            case 0:
+                // do nothing
+                break;
+            case 1:
+                ColumnHandlers.setColumnToAscendingDouble(table, 2, bt_first, bt_second);
+                break;
+            case 2:
+                ColumnHandlers.setColumnToDescendingDouble(table, 2, bt_first, bt_second);
+                break;
+            case 3:                
+                ColumnHandlers.setColumnToRandomizeDouble(table, 2, bt_first, bt_second);
+                break;
+            default:
+                break;
+        }    
+        
+        switch(priority_index) {
+            case 0:
+                // do nothing
+                break;
+            case 1:
+                ColumnHandlers.setColumnToAscendingInt(table, 3, table.getRowCount());
+                break;
+            case 2:
+                ColumnHandlers.setColumnToDescendingInt(table, 3, table.getRowCount());
+                break;
+            case 3:                
+                ColumnHandlers.setColumnToRandomizeInt(table, 3, 0, table.getRowCount());
+                break;
+            default:
+                break;
+        }
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Configurations Handler">
+    private void configurationsHandler() {
+        int type_selected_index = type_comboBox.getSelectedIndex();
+        int row_count = Integer.valueOf((String)count_comboBox.getSelectedItem());
+        
+        TableHandlers.setTable(type_selected_index, row_count, table);
+        TableHandlers.setLabels(type_selected_index, type_label_text, count_label_text, mode_label_text, criterion_label_text, type_comboBox, count_comboBox);
+        
+        int selectedIndex = type_comboBox.getSelectedIndex();
+        
+        // Sets the priority label and combo box to enabled or disabled depending on the selected type of process.
+        if(selectedIndex == 3 || selectedIndex == 4) {
+            priority_label.setEnabled(true);
+            priority_comboBox.setEnabled(true);
+        } else {
+            priority_label.setEnabled(false);
+            priority_comboBox.setEnabled(false);
+        }
+        
+        if(selectedIndex == 5) {
+            time_quantum_label.setEnabled(true);
+            time_quantum_textBox.setEnabled(true);
+        } else {
+            time_quantum_label.setEnabled(false);
+            time_quantum_textBox.setEnabled(false);
+        }
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Randomizes All Inputs">
+    private void randomizeAllInputs() {
+        // Sets index of the combo boxes to a random number between 0 to max index.
+        type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));
+        count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount()));                 
+        
+        configurationsHandler();
+        
+        // Randomize the 3 Columns
+        ColumnHandlers.setColumnToRandomizeDouble(table, 1, 1, 10);
+        ColumnHandlers.setColumnToRandomizeDouble(table, 2, 1, 10);
+        
+        if(type_comboBox.getSelectedIndex() == 3 || type_comboBox.getSelectedIndex() == 4) {
+            ColumnHandlers.setColumnToRandomizeInt(table, 3, 0, table.getRowCount());
+        }
+    }
+    //</editor-fold>
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -351,6 +508,9 @@ public class MainWindow extends javax.swing.JFrame {
         toolBar = new javax.swing.JToolBar();
         toolbar_reset = new javax.swing.JButton();
         toolbar_randomize = new javax.swing.JButton();
+        toolbar_clear_table = new javax.swing.JButton();
+        toolbar_shuffle_AT = new javax.swing.JButton();
+        toolbar_shuffle_BT = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         mode_label = new javax.swing.JLabel();
         count_label = new javax.swing.JLabel();
@@ -359,7 +519,6 @@ public class MainWindow extends javax.swing.JFrame {
         criterion_label_text = new javax.swing.JLabel();
         count_label_text = new javax.swing.JLabel();
         type_label_text = new javax.swing.JLabel();
-        mode_label_text = new javax.swing.JLabel();
         at_second_textField = new javax.swing.JTextField();
         bt_second_textField = new javax.swing.JTextField();
         at_first_label = new javax.swing.JLabel();
@@ -369,11 +528,20 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         bt_first_label = new javax.swing.JLabel();
         bt_second_label = new javax.swing.JLabel();
+        mode_label_text = new javax.swing.JLabel();
+        time_quantum_label = new javax.swing.JLabel();
+        time_quantum_textBox = new javax.swing.JTextField();
         Menu = new javax.swing.JMenuBar();
         Menu_File = new javax.swing.JMenu();
         Menu_File_Exit = new javax.swing.JMenuItem();
         Menu_Edit = new javax.swing.JMenu();
         Menu_Edit_Reset = new javax.swing.JMenuItem();
+        Menu_Edit_Clear = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        Menu_Edit_Randomize = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        Menu_Edit_Shuffle_AT = new javax.swing.JMenuItem();
+        Menu_Edit_Shuffle_BT = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         theme = new javax.swing.JMenu();
         theme_Acryl = new javax.swing.JRadioButtonMenuItem();
@@ -541,7 +709,43 @@ public class MainWindow extends javax.swing.JFrame {
         });
         toolBar.add(toolbar_randomize);
 
-        getContentPane().add(toolBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 7, 70, 30));
+        toolbar_clear_table.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProcessSchedule/empty_table_24.png"))); // NOI18N
+        toolbar_clear_table.setToolTipText("Clear Table");
+        toolbar_clear_table.setFocusable(false);
+        toolbar_clear_table.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_clear_table.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_clear_table.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_clear_tableActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_clear_table);
+
+        toolbar_shuffle_AT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_AT_24.png"))); // NOI18N
+        toolbar_shuffle_AT.setToolTipText("Shuffle Arrival Time (AT)");
+        toolbar_shuffle_AT.setFocusable(false);
+        toolbar_shuffle_AT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_shuffle_AT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_shuffle_AT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_shuffle_ATActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_shuffle_AT);
+
+        toolbar_shuffle_BT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_BT_24.png"))); // NOI18N
+        toolbar_shuffle_BT.setToolTipText("Shuffle Burst Time (BT)");
+        toolbar_shuffle_BT.setFocusable(false);
+        toolbar_shuffle_BT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_shuffle_BT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_shuffle_BT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_shuffle_BTActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_shuffle_BT);
+
+        getContentPane().add(toolBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 30));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -552,38 +756,34 @@ public class MainWindow extends javax.swing.JFrame {
         mode_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         mode_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         mode_label.setText("Mode:");
-        getContentPane().add(mode_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 70, 50, -1));
+        getContentPane().add(mode_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 70, 50, -1));
 
         count_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         count_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         count_label.setText("Count:");
-        getContentPane().add(count_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 40, -1));
+        getContentPane().add(count_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 40, -1));
 
         criterion_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         criterion_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         criterion_label.setText("Criterion:");
-        getContentPane().add(criterion_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 50, -1));
+        getContentPane().add(criterion_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, 50, -1));
 
         type_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         type_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         type_label.setText("Type:");
-        getContentPane().add(type_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 40, -1));
+        getContentPane().add(type_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 40, -1));
 
         criterion_label_text.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         criterion_label_text.setText("text\n");
-        getContentPane().add(criterion_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 100, -1, -1));
+        getContentPane().add(criterion_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, -1, -1));
 
         count_label_text.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         count_label_text.setText("text\n");
-        getContentPane().add(count_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 100, -1, -1));
+        getContentPane().add(count_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, -1, -1));
 
         type_label_text.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         type_label_text.setText("text ");
-        getContentPane().add(type_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 70, -1, -1));
-
-        mode_label_text.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        mode_label_text.setText("text\n");
-        getContentPane().add(mode_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 70, -1, -1));
+        getContentPane().add(type_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 70, -1, -1));
 
         at_second_textField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         getContentPane().add(at_second_textField, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 310, 40, 32));
@@ -618,6 +818,16 @@ public class MainWindow extends javax.swing.JFrame {
         bt_second_label.setText("Step");
         getContentPane().add(bt_second_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, -1, 20));
 
+        mode_label_text.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        mode_label_text.setText("text\n");
+        getContentPane().add(mode_label_text, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, -1, -1));
+
+        time_quantum_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        time_quantum_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        time_quantum_label.setText("Time Quantum:");
+        getContentPane().add(time_quantum_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 70, 90, -1));
+        getContentPane().add(time_quantum_textBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 68, 50, -1));
+
         Menu_File.setText("File");
         Menu_File.setToolTipText("");
 
@@ -634,7 +844,46 @@ public class MainWindow extends javax.swing.JFrame {
         Menu_Edit.setText("Edit");
 
         Menu_Edit_Reset.setText("Reset");
+        Menu_Edit_Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Edit_ResetActionPerformed(evt);
+            }
+        });
         Menu_Edit.add(Menu_Edit_Reset);
+
+        Menu_Edit_Clear.setText("Clear Table");
+        Menu_Edit_Clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Edit_ClearActionPerformed(evt);
+            }
+        });
+        Menu_Edit.add(Menu_Edit_Clear);
+        Menu_Edit.add(jSeparator4);
+
+        Menu_Edit_Randomize.setText("Randomize All Inputs");
+        Menu_Edit_Randomize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Edit_RandomizeActionPerformed(evt);
+            }
+        });
+        Menu_Edit.add(Menu_Edit_Randomize);
+        Menu_Edit.add(jSeparator5);
+
+        Menu_Edit_Shuffle_AT.setText("Shuffle Arrival Time (AT)");
+        Menu_Edit_Shuffle_AT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Edit_Shuffle_ATActionPerformed(evt);
+            }
+        });
+        Menu_Edit.add(Menu_Edit_Shuffle_AT);
+
+        Menu_Edit_Shuffle_BT.setText("Shuffle Burst Time (BT)");
+        Menu_Edit_Shuffle_BT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Menu_Edit_Shuffle_BTActionPerformed(evt);
+            }
+        });
+        Menu_Edit.add(Menu_Edit_Shuffle_BT);
 
         Menu.add(Menu_Edit);
 
@@ -714,126 +963,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_Menu_File_ExitActionPerformed
     
     private void config_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_config_buttonActionPerformed
-        int type_selected_index = type_comboBox.getSelectedIndex();
-        int row_count = Integer.valueOf((String)count_comboBox.getSelectedItem());
-        
-        TableHandlers.setTable(type_selected_index, row_count, table);
-        TableHandlers.setLabels(type_selected_index, type_label_text, count_label_text, mode_label_text, criterion_label_text, type_comboBox, count_comboBox);
-        
-        int selectedIndex = type_comboBox.getSelectedIndex();
-        
-        // Sets the priority label and combo box to enabled or disabled depending on the selected type of process.
-        if(selectedIndex == 3 || selectedIndex == 4) {
-            priority_label.setEnabled(true);
-            priority_comboBox.setEnabled(true);
-        } else {
-            priority_label.setEnabled(false);
-            priority_comboBox.setEnabled(false);
-        }
+        configurationsHandler();
     }//GEN-LAST:event_config_buttonActionPerformed
                 
     private void ao_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ao_buttonActionPerformed
-        int at_index = at_comboBox.getSelectedIndex();
-        int bt_index = bt_comboBox.getSelectedIndex();
-        int priority_index = priority_comboBox.getSelectedIndex();
-        
-        // Remove all non numeric characters and spaces        
-        String at_first_str = NumericHandlers.removeAllNonNumeric(at_first_textField.getText());
-        String at_second_str = NumericHandlers.removeAllNonNumeric(at_second_textField.getText());
-        String bt_first_str = NumericHandlers.removeAllNonNumeric(bt_first_textField.getText());
-        String bt_second_str = NumericHandlers.removeAllNonNumeric(bt_second_textField.getText());        
-        
-        // Update the text fields
-        at_first_textField.setText(at_first_str);
-        at_second_textField.setText(at_second_str);
-        bt_first_textField.setText(bt_first_str);
-        bt_second_textField.setText(bt_second_str);
-        
-        // Convert string to double
-        double at_first = 0;
-        double at_second = 0;
-        double bt_first = 0;
-        double bt_second = 0;
-        
-        // Try if the input is valid for conversion to double, catch sets the text field to null then sets error to true to stop the method from continuing.   
-        try { 
-            at_first = Double.parseDouble(at_first_str); 
-        } catch (NumberFormatException ex) { 
-            at_first_textField.setText(null); 
-        }
-        try { 
-            at_second = Double.parseDouble(at_second_str); 
-        } catch (NumberFormatException ex) { 
-            at_second_textField.setText(null); 
-        } 
-        try { 
-            bt_first = Double.parseDouble(bt_first_str); 
-        } catch (NumberFormatException ex) {
-            bt_first_textField.setText(null); 
-        }                       
-        try {
-            bt_second = Double.parseDouble(bt_second_str); 
-        } catch (NumberFormatException ex) {
-            bt_second_textField.setText(null); 
-        }                                
-        
-        /**
-         * case 0: none
-         * case 1: ascending
-         * case 2: descending
-         * case 3: randomize
-         */
-        
-        switch(at_index) {
-            case 0:
-                // do nothing
-                break;
-            case 1:
-                ColumnHandlers.setColumnToAscendingDouble(table, 1, at_first, at_second);
-                break;
-            case 2:
-                ColumnHandlers.setColumnToDescendingDouble(table, 1, at_first, at_second);
-                break;
-            case 3:                
-                ColumnHandlers.setColumnToRandomizeDouble(table, 1, at_first, at_second);
-                break;
-            default:
-                break;
-        }                
-        
-        switch(bt_index) {
-            case 0:
-                // do nothing
-                break;
-            case 1:
-                ColumnHandlers.setColumnToAscendingDouble(table, 2, bt_first, bt_second);
-                break;
-            case 2:
-                ColumnHandlers.setColumnToDescendingDouble(table, 2, bt_first, bt_second);
-                break;
-            case 3:                
-                ColumnHandlers.setColumnToRandomizeDouble(table, 2, bt_first, bt_second);
-                break;
-            default:
-                break;
-        }    
-        
-        switch(priority_index) {
-            case 0:
-                // do nothing
-                break;
-            case 1:
-                ColumnHandlers.setColumnToAscendingInt(table, 3, table.getRowCount());
-                break;
-            case 2:
-                ColumnHandlers.setColumnToDescendingInt(table, 3, table.getRowCount());
-                break;
-            case 3:                
-                ColumnHandlers.setColumnToRandomizeInt(table, 3, 0, table.getRowCount());
-                break;
-            default:
-                break;
-        }
+        advanceOptionsHandler();
     }//GEN-LAST:event_ao_buttonActionPerformed
 
     private void toolbar_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_resetActionPerformed
@@ -841,28 +975,42 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_resetActionPerformed
             
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
-        // Sets index of the combo boxes to a random number between 0 to max index.
-        type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));
-        count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount())); 
-        
-        config_button.doClick(); // Programmatically perform a "click". This does the same thing as if the user had pressed and released the button.
-        
-        // Sets the selected item of at and bt combo boxes to index 3 which is the "Randomize" item.
-        at_comboBox.setSelectedIndex(3);
-        bt_comboBox.setSelectedIndex(3);
-        // If the result of the randomize selection in the at combo box is index 3 or 4 respectively "non-preemptive" and "preemptive" then priority combo box is involved, else not.
-        if(type_comboBox.getSelectedIndex() == 3 || type_comboBox.getSelectedIndex() == 4) {
-            priority_comboBox.setSelectedIndex(3);
-        }
-        
-        // Sets the text of the min text field to 1 and max text field to 100.
-        at_first_textField.setText("1");
-        at_second_textField.setText("100");
-        bt_first_textField.setText("1");
-        bt_second_textField.setText("100");        
-
-        ao_button.doClick(); // // Programmatically perform a "click". This does the same thing as if the user had pressed and released the button.
+        randomizeAllInputs();
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
+
+    private void toolbar_clear_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_clear_tableActionPerformed
+        TableHandlers.clearTable(table);
+        TableHandlers.setProcessNumber(table);
+    }//GEN-LAST:event_toolbar_clear_tableActionPerformed
+
+    private void toolbar_shuffle_BTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_BTActionPerformed
+        TableHandlers.shuffleTableColumn(table, 2); // 2 which is the column of BT.
+    }//GEN-LAST:event_toolbar_shuffle_BTActionPerformed
+
+    private void toolbar_shuffle_ATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_ATActionPerformed
+        TableHandlers.shuffleTableColumn(table, 1); // 1 which is the column of AT.
+    }//GEN-LAST:event_toolbar_shuffle_ATActionPerformed
+
+    private void Menu_Edit_ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_ResetActionPerformed
+        setComponentsToDefault();
+    }//GEN-LAST:event_Menu_Edit_ResetActionPerformed
+
+    private void Menu_Edit_RandomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_RandomizeActionPerformed
+        randomizeAllInputs();
+    }//GEN-LAST:event_Menu_Edit_RandomizeActionPerformed
+
+    private void Menu_Edit_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_ClearActionPerformed
+        TableHandlers.clearTable(table);
+        TableHandlers.setProcessNumber(table);
+    }//GEN-LAST:event_Menu_Edit_ClearActionPerformed
+
+    private void Menu_Edit_Shuffle_ATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_Shuffle_ATActionPerformed
+        TableHandlers.shuffleTableColumn(table, 1); // 1 which is the column of AT.
+    }//GEN-LAST:event_Menu_Edit_Shuffle_ATActionPerformed
+
+    private void Menu_Edit_Shuffle_BTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_Shuffle_BTActionPerformed
+        TableHandlers.shuffleTableColumn(table, 2); // 2 which is the column of BT.
+    }//GEN-LAST:event_Menu_Edit_Shuffle_BTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -938,7 +1086,11 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Menu;
     private javax.swing.JMenu Menu_Edit;
+    private javax.swing.JMenuItem Menu_Edit_Clear;
+    private javax.swing.JMenuItem Menu_Edit_Randomize;
     private javax.swing.JMenuItem Menu_Edit_Reset;
+    private javax.swing.JMenuItem Menu_Edit_Shuffle_AT;
+    private javax.swing.JMenuItem Menu_Edit_Shuffle_BT;
     private javax.swing.JMenu Menu_File;
     private javax.swing.JMenuItem Menu_File_Exit;
     private javax.swing.JButton ao_button;
@@ -976,6 +1128,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel mode_label;
     private javax.swing.JLabel mode_label_text;
@@ -995,9 +1149,14 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem theme_Noire;
     private javax.swing.JRadioButtonMenuItem theme_Smart;
     private javax.swing.JRadioButtonMenuItem theme_Texture;
+    private javax.swing.JLabel time_quantum_label;
+    private javax.swing.JTextField time_quantum_textBox;
     private javax.swing.JToolBar toolBar;
+    private javax.swing.JButton toolbar_clear_table;
     private javax.swing.JButton toolbar_randomize;
     private javax.swing.JButton toolbar_reset;
+    private javax.swing.JButton toolbar_shuffle_AT;
+    private javax.swing.JButton toolbar_shuffle_BT;
     private javax.swing.JComboBox<String> type_comboBox;
     private javax.swing.JLabel type_label;
     private javax.swing.JLabel type_label_text;
