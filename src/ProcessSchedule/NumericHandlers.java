@@ -6,7 +6,6 @@
 package ProcessSchedule;
 
 import java.util.concurrent.ThreadLocalRandom;
-import javax.swing.JTable;
 
 /**
  *
@@ -30,13 +29,6 @@ public class NumericHandlers {
      */
     public static double roundTo2DecimalPlaces(double d) {
         return Math.round(d * 100.0) / 100.0;
-    }
-
-    // Set the Process number to incrementing order.
-    public static void setProcessNumber(JTable table) {
-        for (int i = 0; i < table.getRowCount(); i++) {
-            table.setValueAt(i + 1, i, 0);
-        }
     }
         
     // Returns a random integer number between min [inclusive] and max [exclusive].

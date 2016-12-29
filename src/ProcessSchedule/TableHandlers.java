@@ -5,11 +5,12 @@
  */
 package ProcessSchedule;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -80,21 +81,9 @@ public class TableHandlers {
                 break;
         }
         tableHeader.repaint();
+        table.getTableHeader().setReorderingAllowed(false); // Disable table column dragging.
         centerTableHorizontalAlignment(table);
-        NumericHandlers.setProcessNumber(table);
-    }
-
-    /**
-     * Sets the horizontal alignment of elements in a table to the center
-     * @param table the table to be modified.
-     */
-    public static void centerTableHorizontalAlignment(JTable table) {
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
+        setProcessNumber(table);
     }
 
     /**
@@ -128,11 +117,54 @@ public class TableHandlers {
                 break;
             case 5:
                 modeLabel.setText("Preemptive");
-                criterionLabel.setText("");
+                criterionLabel.setText("Arrival time (AT)");
                 break;
             default:
                 break;
         }
     }
     
+    /**
+     * Sets the horizontal alignment of elements in a table to the center
+     * @param table the table to be modified.
+     */
+    public static void centerTableHorizontalAlignment(JTable table) {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+    
+    // Set the Process number to incrementing order.
+    public static void setProcessNumber(JTable table) {
+        for (int i = 0; i < table.getRowCount(); i++) {
+            table.setValueAt(i + 1, i, 0);
+        }
+    }
+    
+    // Clears all table cell
+    public static void clearTable(JTable table) {
+        for(int j = 0; j < table.getColumnCount(); j++) {
+            for(int i = 0; i < table.getRowCount(); i++) {
+                table.setValueAt(null, i, j);
+            }
+        }
+    }
+    
+    // Shuffles a table column
+    public static void shuffleTableColumn(JTable table, int column) {
+        ArrayList<Double> list = new ArrayList<>();
+        
+        for(int i = 0; i < table.getRowCount(); i++) {
+           list.add((Double) table.getValueAt(i, column));
+        }        
+        
+        Collections.shuffle(list);  // Shuffle the list
+        
+        for(int i = 0; i < table.getRowCount(); i++) {
+            table.setValueAt(list.get(i), i, column);
+        }
+    }
 }
