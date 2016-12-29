@@ -1,6 +1,6 @@
 *.class
 
-# Netbeans Specific #
+# Netbeans Specific
 nbproject/private/
 build/
 nbbuild/
@@ -11,7 +11,7 @@ nbdist/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+# Package Files
 *.jar
 *.war
 *.ear
