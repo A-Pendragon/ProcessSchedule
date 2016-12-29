@@ -5,7 +5,6 @@
  */
 package ProcessSchedule;
 
-import java.util.Random;
 import javax.swing.JTable;
 
 /**
@@ -20,17 +19,15 @@ public class ColumnHandlers {
      * @param rangeMin
      * @param rangeMax
      */
-    public static void setColumnToRandomizeDouble(JTable table, int column_index, double rangeMin, double rangeMax) {
-        Random random = new Random();
-        
+    public static void setColumnToRandomizeDouble(JTable table, int column_index, double rangeMin, double rangeMax) {        
         for (int i = 0; i < table.getRowCount(); i++) {            
-            double randomValue = rangeMin + (rangeMax - rangeMin) * random.nextDouble();            
+            double randomValue = NumericHandlers.randomRange(rangeMin, rangeMax);
             table.setValueAt(NumericHandlers.roundTo2DecimalPlaces(randomValue), i, column_index);
         }
     }
     
     /**
-     * Set the value of a table column to ascending double values.
+     * Set the value of a table column to ascending double by incremental value.
      * @param table the table to be modified.
      * @param column_index index of the table column.
      * @param starting_value the first value before ascending.
@@ -43,7 +40,7 @@ public class ColumnHandlers {
     }
 
     /**
-     * Set the value of a table column to descending double values.
+     * Set the value of a table column to descending double by incremental value.
      * @param table the table to be modified.
      * @param column_index index of the table column.
      * @param starting_value the first value before descending.
@@ -90,12 +87,12 @@ public class ColumnHandlers {
      * Sets a column of the table to random integer values.
      * @param table the table to be modified.
      * @param column_index the index of the table column.
-     * @param range the range of randomization.
+     * @param rangeMin the minimum range of randomization
+     * @param rangeMax the max range range of randomization
      */
-    public static void setColumnToRandomizeInt(JTable table, int column_index, int range) {
-        Random random = new Random();
+    public static void setColumnToRandomizeInt(JTable table, int column_index, int rangeMin, int rangeMax) {
         for (int i = 0; i < table.getRowCount(); i++) {
-            table.setValueAt(random.nextInt(range) + 1, i, column_index);
+            table.setValueAt(NumericHandlers.randomRange(rangeMin, rangeMax) + 1, i, column_index);
         }
     }
 }

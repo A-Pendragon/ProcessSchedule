@@ -11,8 +11,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.LinkedList;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.ButtonGroup;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
@@ -831,7 +829,7 @@ public class MainWindow extends javax.swing.JFrame {
                 ColumnHandlers.setColumnToDescendingInt(table, 3, table.getRowCount());
                 break;
             case 3:                
-                ColumnHandlers.setColumnToRandomizeInt(table, 3, table.getRowCount());
+                ColumnHandlers.setColumnToRandomizeInt(table, 3, 0, table.getRowCount());
                 break;
             default:
                 break;
@@ -843,9 +841,27 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_resetActionPerformed
             
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
-        type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));   // Sets index to a random number between 0 to max index.
-        count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount())); // Sets index to a random number between 0 to max index.
-        System.out.println(NumericHandlers.randomRange(1.0, 1.1));
+        // Sets index of the combo boxes to a random number between 0 to max index.
+        type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));
+        count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount())); 
+        
+        config_button.doClick(); // Programmatically perform a "click". This does the same thing as if the user had pressed and released the button.
+        
+        // Sets the selected item of at and bt combo boxes to index 3 which is the "Randomize" item.
+        at_comboBox.setSelectedIndex(3);
+        bt_comboBox.setSelectedIndex(3);
+        // If the result of the randomize selection in the at combo box is index 3 or 4 respectively "non-preemptive" and "preemptive" then priority combo box is involved, else not.
+        if(type_comboBox.getSelectedIndex() == 3 || type_comboBox.getSelectedIndex() == 4) {
+            priority_comboBox.setSelectedIndex(3);
+        }
+        
+        // Sets the text of the min text field to 1 and max text field to 100.
+        at_first_textField.setText("1");
+        at_second_textField.setText("100");
+        bt_first_textField.setText("1");
+        bt_second_textField.setText("100");        
+
+        ao_button.doClick(); // // Programmatically perform a "click". This does the same thing as if the user had pressed and released the button.
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     /**
