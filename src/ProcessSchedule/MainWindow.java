@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.ButtonGroup;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
@@ -30,7 +32,7 @@ public class MainWindow extends javax.swing.JFrame {
         initListeners();
     }
     
-    //<editor-fold defaultstate="colapsed" desc="JFrame initializations">
+    //<editor-fold defaultstate="collapsed" desc="JFrame initializations">
     /**
      * Initializations of the JFrame and its elements
      */
@@ -276,7 +278,7 @@ public class MainWindow extends javax.swing.JFrame {
     }
     //</editor-fold>
     
-    //<editor-fold defaultstate="colapsed" desc="Sets Components to Default State">
+    //<editor-fold defaultstate="collapsed" desc="Sets Components to Default State">
     private void setComponentsToDefault() {
         // Initialize dynamic labels to null
         type_label_text.setText(null);
@@ -839,10 +841,11 @@ public class MainWindow extends javax.swing.JFrame {
     private void toolbar_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_resetActionPerformed
         setComponentsToDefault();
     }//GEN-LAST:event_toolbar_resetActionPerformed
-
+            
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
-        type_comboBox.setSelectedIndex(0);
-        count_comboBox.setSelectedIndex(0);
+        type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));   // Sets index to a random number between 0 to max index.
+        count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount())); // Sets index to a random number between 0 to max index.
+        System.out.println(NumericHandlers.randomRange(1.0, 1.0));
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     /**

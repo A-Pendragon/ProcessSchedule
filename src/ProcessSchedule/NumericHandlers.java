@@ -5,6 +5,7 @@
  */
 package ProcessSchedule;
 
+import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JTable;
 
 /**
@@ -37,5 +38,22 @@ public class NumericHandlers {
             table.setValueAt(i + 1, i, 0);
         }
     }
+        
+    // Returns a random integer number between min [inclusive] and max [exclusive].
+    // Note that max is exclusive, so using randomRange( 0, 10 ) will return values between 0 and 9. If max equals min, min will be returned.
+    public static int randomRange(int min, int max) {        
+        if(min == max) {
+            return min;
+        }
+        return ThreadLocalRandom.current().nextInt(min, max);                
+    }
     
+    // Returns a random double number between and min [inclusive] and max [exclusive].
+    // Note that max is exclusive, so using Random.Range( 0.0, 1.0 ) will return values between 0.0 and 1.0. If max equals min, min will be returned.
+    public static double randomRange(double min, double max) {
+        if(min == max) {
+            return min;
+        }
+        return ThreadLocalRandom.current().nextDouble(min, max);
+    }
 }

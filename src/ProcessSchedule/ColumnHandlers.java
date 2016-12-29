@@ -23,7 +23,7 @@ public class ColumnHandlers {
     public static void setColumnToRandomizeDouble(JTable table, int column_index, double rangeMin, double rangeMax) {
         Random random = new Random();
         
-        for (int i = 0; i < table.getRowCount(); i++) {
+        for (int i = 0; i < table.getRowCount(); i++) {            
             double randomValue = rangeMin + (rangeMax - rangeMin) * random.nextDouble();
             table.setValueAt(NumericHandlers.roundTo2DecimalPlaces(randomValue), i, column_index);
         }
