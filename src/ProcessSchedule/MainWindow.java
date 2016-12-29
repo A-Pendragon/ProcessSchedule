@@ -30,7 +30,7 @@ public class MainWindow extends javax.swing.JFrame {
         initListeners();
     }
     
-    //<editor-fold defaultstate="colapsed" desc="JFrame initializations">
+    //<editor-fold defaultstate="collapsed" desc="JFrame initializations">
     /**
      * Initializations of the JFrame and its elements
      */
