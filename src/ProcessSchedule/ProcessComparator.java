@@ -15,7 +15,11 @@ public class ProcessComparator implements Comparator<Process> {
     private final String mode;
     
     public ProcessComparator(String mode){
-        this.mode = mode;
+        if(mode.equalsIgnoreCase("shortestremainingtime")){
+            mode = "shortestjobfirst";
+        }if(mode.equalsIgnoreCase("ppriority")){
+            mode = "nppriority";
+        }this.mode = mode;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class ProcessComparator implements Comparator<Process> {
                 returnType = compareBurstTime;  
             }
         }else if(mode.equalsIgnoreCase("nppriority")){
-            int comparePriority = Integer.valueOf(p.getPriority()).compareTo(p1.getPriority());
+            int comparePriority = Integer.valueOf(p1.getPriority()).compareTo(p.getPriority());
             if(comparePriority == 0){
                 returnType = Integer.valueOf(p.getProcessNo()).compareTo(p1.getProcessNo());
             }else{
@@ -46,6 +50,10 @@ public class ProcessComparator implements Comparator<Process> {
             throw new UnsupportedOperationException();
         }
         return returnType;
+    }
+
+    public String getMode() {
+        return mode;
     }
     
 }

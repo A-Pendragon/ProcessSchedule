@@ -14,7 +14,6 @@ public class Process {
     private double arrivalTime;
     private double burstTime;
     private int priority;
-    private double timeQuantum;
     private double completionTime;
     private double turnAroundTime;
     private double waitingTime;
@@ -29,7 +28,7 @@ public class Process {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = 0;
-        this.timeQuantum = this.completionTime = this.turnAroundTime = this.waitingTime = 0;
+        this.completionTime = this.turnAroundTime = this.waitingTime = 0;
     }
 
     public Process(int processNo, double arrivalTime, double burstTime, int priority) {
@@ -37,15 +36,14 @@ public class Process {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
-        this.timeQuantum = this.completionTime = this.turnAroundTime = this.waitingTime = 0;
+        this.completionTime = this.turnAroundTime = this.waitingTime = 0;
     }
     
     public Process(int processNo, double arrivalTime, double burstTime, int priority, double timeQuantum){    
         this.processNo = processNo;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
-        this.priority = priority;
-        this.timeQuantum = timeQuantum; 
+        this.priority = priority; 
         this.completionTime = this.turnAroundTime = this.waitingTime = 0;
     }
     
@@ -54,12 +52,44 @@ public class Process {
         this.arrivalTime = p.arrivalTime;
         this.burstTime = p.burstTime;
         this.priority = p.priority;
-        this.timeQuantum = p.timeQuantum;
         this.completionTime = p.completionTime;
         this.turnAroundTime = p.turnAroundTime;
         this.waitingTime = p.waitingTime;
     }
 
+    public Process splitProcessBy(String timeUnit){
+        if(this.burstTime == 0){
+            return null;
+        }else{
+            Process splitProcess = new Process(this);
+            splitProcess.setBurstTime(timeUnit.equalsIgnoreCase("SINGLE_TIME_UNIT") ? 1 : this.burstTime);
+            this.burstTime = (timeUnit.equalsIgnoreCase("SINGLE_TIME_UNIT") ? this.burstTime-- : 0);
+            return new Process(splitProcess);
+        }
+    }
+    
+    @Override
+    public String toString(){
+        return "\n>> PNO(" + Integer.toString(this.processNo) + ") "+
+               ">> AT(" + Double.toString(this.arrivalTime) + ") BT(" + Double.toString(this.burstTime) + ") Priority(" + Integer.toString(this.priority) + ") " + 
+               ">> CT(" + Double.toString(this.completionTime) + ") TAT(" + Double.toString(this.turnAroundTime) + ") WT(" + Double.toString(this.waitingTime) + ") ";
+    }
+    
+    @Override
+    public boolean equals(Object process){
+        if(process instanceof Process){
+            Process p = (Process)process;
+            return this.hashCode() == p.hashCode();
+        }return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.processNo;
+        return hash;
+    }
+        
     public int getProcessNo() {
         return processNo;
     }
@@ -92,14 +122,6 @@ public class Process {
         this.priority = priority;
     }
 
-    public double getTimeQuantum() {
-        return timeQuantum;
-    }
-
-    public void setTimeQuantum(double timeQuantum) {
-        this.timeQuantum = timeQuantum;
-    }
-
     public double getCompletionTime() {
         return completionTime;
     }
@@ -125,16 +147,5 @@ public class Process {
     public Process computeWaitingTime() {
         this.waitingTime = this.turnAroundTime - this.burstTime;
         return this;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String toString(){
-        return "\n>> PNO: " + Integer.toString(this.processNo) + "\n" +
-               ">> AT(" + Double.toString(this.arrivalTime) + ") BT(" + Double.toString(this.burstTime) + ") Priority(" + Integer.toString(this.priority) + ") QT(" + Double.toString(this.timeQuantum) + ")\n" +
-               ">> CT(" + Double.toString(this.completionTime) + ") TAT(" + Double.toString(this.turnAroundTime) + ") WT(" + Double.toString(this.waitingTime) + ")\n";
     }
 }

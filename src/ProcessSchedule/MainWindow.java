@@ -923,16 +923,17 @@ public class MainWindow extends javax.swing.JFrame {
             new MainWindow().setVisible(true);
         });
         
-        /*Example provided with the use of nonPreemptive function*/
+        /*Example provided with the use of schedule function*/
         LinkedList<Process> plist = new LinkedList<>();
-        plist.add(new Process(1,0,2));
-        plist.add(new Process(2,2,5));
-        plist.add(new Process(3,3,1));
-        plist.add(new Process(4,4,2));
-        plist.add(new Process(5,5,1));
-        ProcessAlgorithm pa = new ProcessAlgorithm(plist);
-        pa.nonPreemptive("shortestjobfirst");
-        System.out.println(pa.toString());
+        plist.add(new Process(1,0,7,2));
+        plist.add(new Process(2,1,5,3));
+        plist.add(new Process(3,2,3,5));
+        plist.add(new Process(4,3,1,1));
+        //plist.add(new Process(5,5,1));
+        ProcessOperation pa = new ProcessOperation(plist, 0);
+        pa.nonPreemptiveSchedule("firstcomefirstserve");
+        //pa.schedule("shortestjobfirst");
+        //System.out.println(pa.toString());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
