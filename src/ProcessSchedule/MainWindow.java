@@ -1002,6 +1002,7 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //<editor-fold defaultstate="collapsed" desc="Main Window Event Handlers">
     private void Menu_File_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_File_ExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_Menu_File_ExitActionPerformed
@@ -1069,7 +1070,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
         TableSystemClipboard.pasteTable(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
-
+    //</editor-fold>
     /**
      * @param args the command line arguments
      */
