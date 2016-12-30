@@ -709,7 +709,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         toolBar.add(toolbar_randomize);
 
-        toolbar_clear_table.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ProcessSchedule/empty_table_24.png"))); // NOI18N
+        toolbar_clear_table.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/empty_table_24.png"))); // NOI18N
         toolbar_clear_table.setToolTipText("Clear Table");
         toolbar_clear_table.setFocusable(false);
         toolbar_clear_table.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1075,11 +1075,12 @@ public class MainWindow extends javax.swing.JFrame {
         LinkedList<Process> plist = new LinkedList<>();
         plist.add(new Process(1,0,7,2));
         plist.add(new Process(2,1,5,3));
-        plist.add(new Process(3,2,3,5));
+        plist.add(new Process(3,0,3,5));
         plist.add(new Process(4,3,1,1));
         //plist.add(new Process(5,5,1));
         ProcessOperation pa = new ProcessOperation(plist, 0);
-        pa.nonPreemptiveSchedule("firstcomefirstserve");
+        //pa.nonPreemptiveSchedule("firstcomefirstserve");
+        pa.preemptiveSchedule("nppriority");
         //pa.schedule("shortestjobfirst");
         //System.out.println(pa.toString());
     }

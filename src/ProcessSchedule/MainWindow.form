@@ -664,7 +664,7 @@
         <Component class="javax.swing.JButton" name="toolbar_clear_table">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/ProcessSchedule/empty_table_24.png"/>
+              <Image iconType="3" name="/Resources/empty_table_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Clear Table"/>
             <Property name="focusable" type="boolean" value="false"/>

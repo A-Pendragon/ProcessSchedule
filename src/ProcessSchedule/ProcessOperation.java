@@ -5,6 +5,7 @@
  */
 package ProcessSchedule;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -59,40 +60,91 @@ public class ProcessOperation {
                 tempQueue.add(this.arrivalQueue.get(i));
             }
         }this.arrivalQueue.removeAll(tempQueue);
-        
-        System.out.println("ARRIVAL" + this.arrivalQueue);
-        System.out.println("REQUEST" + this.requestQueue);
     }
     
-    private void initProcessComputation(){
-        Collections.sort(this.requestQueue, new ProcessComparator("firstcomefirstserve"));
+    private void initNonPreemptiveComputation(String mode){
+        Collections.sort(this.requestQueue, new ProcessComparator(mode));
         Process firstProcess = this.requestQueue.removeFirst();
-            
-
-        //this.totalProcessTime += firstProcess.getBurstTime();
-        
+        this.totalProcessTime += firstProcess.getBurstTime();      
         this.processSchedule.add(firstProcess);
         for(int i = 0; i < this.processComputation.size(); i++){
             if(this.processComputation.get(i).equals(firstProcess)){
-                this.processComputation.add(firstProcess
+                this.processComputation.get(i)
                     .setCompletionTime(this.totalProcessTime)
                     .computeTurnAroundTime()
-                    .computeWaitingTime()
-                );
+                    .computeWaitingTime();
                 break;
             }
         }
+    }
+    
+    private void initPreemptiveComputation(String mode){
+        LinkedList<Process> tempQueue = new LinkedList<>();
+        this.requestQueue.forEach((process) -> {
+            tempQueue.add(new Process(process));
+        });
+        this.requestQueue.removeAll(this.requestQueue);
+        tempQueue.forEach((process) -> {
+            this.requestQueue.add(process);
+        });
+        tempQueue.removeAll(tempQueue);
+        Collections.sort(this.requestQueue, new ProcessComparator(mode));
+        Process firstProcess = new Process(this.requestQueue.getFirst());
+        firstProcess.setBurstTime(1);
+        this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-1);
         
-        
+        this.totalProcessTime++;      
+        this.processSchedule.add(firstProcess);
+        if(this.requestQueue.getFirst().getBurstTime() == 0){
+            for(int i = 0; i < this.processComputation.size(); i++){
+                if(this.processComputation.get(i).equals(this.requestQueue.getFirst())){
+                    this.processComputation.get(i)
+                        .setCompletionTime(this.totalProcessTime)
+                        .computeTurnAroundTime()
+                        .computeWaitingTime();
+                    this.requestQueue.removeFirst();
+                    break;
+                }
+            }
+        }
     }
     
     public void nonPreemptiveSchedule(String mode){
         this.reset();
         this.initRequestQueue();
-        this.initProcessComputation();
+        this.initNonPreemptiveComputation(mode);
         ProcessComparator processComparator = new ProcessComparator(mode);
-        
         while(!(this.arrivalQueue.isEmpty() && this.requestQueue.isEmpty())){
+            LinkedList<Process> tempQueue = new LinkedList<>();
+            for(int i = 0; i < this.arrivalQueue.size(); i++){
+                if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
+                    this.requestQueue.add(this.arrivalQueue.get(i));
+                    tempQueue.add(this.arrivalQueue.get(i));
+                }
+            }this.arrivalQueue.removeAll(tempQueue);      
+            Collections.sort(this.requestQueue, processComparator);
+            Process currentProcess = this.requestQueue.removeFirst();
+            
+            this.totalProcessTime += currentProcess.getBurstTime();
+            this.processSchedule.add(currentProcess);
+            for(int i = 0; i < this.processComputation.size(); i++){
+                if(this.processComputation.get(i).equals(currentProcess)){
+                    this.processComputation.get(i)
+                        .setCompletionTime(this.totalProcessTime)
+                        .computeTurnAroundTime()
+                        .computeWaitingTime();
+                    break;
+                }
+            }
+        }
+    }
+    
+    public void preemptiveSchedule(String mode){
+        this.reset();
+        this.initRequestQueue();
+        this.initPreemptiveComputation(mode);
+        ProcessComparator processComparator = new ProcessComparator(mode);
+        while(!(this.arrivalQueue.isEmpty() && this.requestQueue.isEmpty())){          
             LinkedList<Process> tempQueue = new LinkedList<>();
             for(int i = 0; i < this.arrivalQueue.size(); i++){
                 if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
@@ -101,43 +153,63 @@ public class ProcessOperation {
                 }
             }this.arrivalQueue.removeAll(tempQueue);
             
-            System.out.println("\nARRIVAL" + this.arrivalQueue);
-            System.out.println("REQUEST" + this.requestQueue);
-            System.out.println("SCHED" + this.processSchedule);
-            
             Collections.sort(this.requestQueue, processComparator);
-            System.out.println("\nARRIVAL" + this.arrivalQueue);
-            System.out.println("REQUEST" + this.requestQueue);
-            System.out.println("SCHED" + this.processSchedule);
-            Process currentProcess = this.requestQueue.removeFirst();
-            System.out.println("\nARRIVAL" + this.arrivalQueue);
-            System.out.println("REQUEST" + this.requestQueue);
-            System.out.println("SCHED" + this.processSchedule);
-            
-            this.totalProcessTime += currentProcess.getBurstTime();
-            this.processSchedule.add(currentProcess);
-            for(int i = 0; i < this.processComputation.size(); i++){
-                if(this.processComputation.get(i).equals(currentProcess)){
-                    this.processComputation.add(currentProcess
-                        .setCompletionTime(this.totalProcessTime)
-                        .computeTurnAroundTime()
-                        .computeWaitingTime()
-                    );
-                    break;
+            Process currentProcess = new Process(this.requestQueue.getFirst());
+            currentProcess.setBurstTime(1);
+            this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-1);
+           
+            this.totalProcessTime += currentProcess.getBurstTime();      
+            this.processSchedule.add(currentProcess
+                .setCompletionTime(this.totalProcessTime)
+                .computeTurnAroundTime()
+                .computeWaitingTime()
+            );
+
+            if(this.requestQueue.getFirst().getBurstTime() == 0){
+                for(int i = 0; i < this.processComputation.size(); i++){
+                    if(this.processComputation.get(i).equals(this.requestQueue.getFirst())){
+                        this.processComputation.get(i)
+                            .setCompletionTime(this.totalProcessTime)
+                            .computeTurnAroundTime()
+                            .computeWaitingTime();
+                        this.requestQueue.removeFirst();
+                        break;
+                    }
                 }
             }
-            
-            System.out.println("\nARRIVAL" + this.arrivalQueue);
-            System.out.println("REQUEST" + this.requestQueue);
-            System.out.println("SCHED" + this.processSchedule);
-        }
-        
+        }this.setAverageTime();
+        System.out.println("Given Process:" + this.processInitStorage);
+        System.out.println("Computed Process:" + this.processComputation);
+        System.out.println("Scheduled Process:" + this.processSchedule);
+        System.out.println("Total Process Time Consumed(" + Double.toString(this.totalProcessTime));
+        System.out.println("Average Turn Around Time(" + Double.toString(this.averageTurnAroundTime));
+        System.out.println("Average Waiting Time(" + Double.toString(this.averageWaitingTime));
+    }
+    
+    private double computeAverageTime(ArrayList<Double> timeList){
+        double totalTime = 0;
+        totalTime = timeList.stream().map((time) -> time).reduce(totalTime, (accumulator, _item) -> accumulator + _item);
+        return totalTime/timeList.size();
+    }
+    
+    private void setAverageTime(){
+        ArrayList<Double> tatList = new ArrayList<>();
+        ArrayList<Double> wtList = new ArrayList<>();
+        this.processComputation.stream().map((process) -> {
+            tatList.add(process.getTurnAroundTime());
+            return process;
+        }).forEachOrdered((process) -> {
+            wtList.add(process.getWaitingTime());
+        });
+        this.averageTurnAroundTime = this.computeAverageTime(tatList);
+        this.averageWaitingTime = this.computeAverageTime(wtList);
     }
     
     @Override
     public String toString(){
-        return "\nProcessList:" + this.processComputation.toString() +
-               "\n\nProcessSchedule:" + this.processSchedule.toString() +
+        return "\nGiven Process:" + this.processInitStorage +
+               "\nComputed Process:" + this.processComputation +
+               "\nScheduled Process:" + this.processSchedule +
                "Total Process Time Consumed(" + Double.toString(this.totalProcessTime) + ")\n" +
                "Average Turn Around Time(" + Double.toString(this.averageTurnAroundTime) + ")\n" +
                "Average Waiting Time(" + Double.toString(this.averageWaitingTime) + ")\n";
