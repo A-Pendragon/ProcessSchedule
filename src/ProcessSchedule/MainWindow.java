@@ -1141,7 +1141,7 @@ public class MainWindow extends javax.swing.JFrame {
         //pa.roundRobinSchedule(3);
         System.out.println(pa.toString());
     }
-
+    //<editor-fold defaultstate="collapsed" desc="Netbeans Generated Variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Menu;
     private javax.swing.JMenu Menu_Edit;
@@ -1225,4 +1225,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel type_label;
     private javax.swing.JLabel type_label_text;
     // End of variables declaration//GEN-END:variables
+ //</editor-fold>
 }
