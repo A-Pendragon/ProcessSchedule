@@ -38,15 +38,7 @@ public class Process {
         this.priority = priority;
         this.completionTime = this.turnAroundTime = this.waitingTime = 0;
     }
-    
-    public Process(int processNo, double arrivalTime, double burstTime, int priority, double timeQuantum){    
-        this.processNo = processNo;
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
-        this.priority = priority; 
-        this.completionTime = this.turnAroundTime = this.waitingTime = 0;
-    }
-    
+       
     public Process(Process p){
         this.processNo = p.processNo;
         this.arrivalTime = p.arrivalTime;
@@ -55,17 +47,6 @@ public class Process {
         this.completionTime = p.completionTime;
         this.turnAroundTime = p.turnAroundTime;
         this.waitingTime = p.waitingTime;
-    }
-
-    public Process splitProcessBy(String timeUnit){
-        if(this.burstTime == 0){
-            return null;
-        }else{
-            Process splitProcess = new Process(this);
-            splitProcess.setBurstTime(timeUnit.equalsIgnoreCase("SINGLE_TIME_UNIT") ? 1 : this.burstTime);
-            this.burstTime = (timeUnit.equalsIgnoreCase("SINGLE_TIME_UNIT") ? this.burstTime-- : 0);
-            return new Process(splitProcess);
-        }
     }
     
     @Override

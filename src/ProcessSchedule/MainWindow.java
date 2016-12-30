@@ -1077,12 +1077,11 @@ public class MainWindow extends javax.swing.JFrame {
         plist.add(new Process(2,1,5,3));
         plist.add(new Process(3,0,3,5));
         plist.add(new Process(4,3,1,1));
-        //plist.add(new Process(5,5,1));
-        ProcessOperation pa = new ProcessOperation(plist, 0);
-        //pa.nonPreemptiveSchedule("firstcomefirstserve");
-        pa.preemptiveSchedule("nppriority");
-        //pa.schedule("shortestjobfirst");
-        //System.out.println(pa.toString());
+        ProcessOperation pa = new ProcessOperation(plist);
+        pa.nonPreemptiveSchedule("nppriority");
+        //pa.preemptiveSchedule("shortestremainingtime");
+        //pa.roundRobinSchedule(3);
+        System.out.println(pa.toString());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
