@@ -154,7 +154,7 @@ public class TableHandlers {
     }
     
     // Shuffles a table column
-    public static void shuffleTableColumn(JTable table, int column) {
+    public static void shuffleTableColumnDouble(JTable table, int column) {
         ArrayList<Double> list = new ArrayList<>();
         
         for(int i = 0; i < table.getRowCount(); i++) {
@@ -167,4 +167,19 @@ public class TableHandlers {
             table.setValueAt(list.get(i), i, column);
         }
     }
+    
+    // Shuffles a table column
+    public static void shuffleTableColumnInt(JTable table, int column) {
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for(int i = 0; i < table.getRowCount(); i++) {
+           list.add((Integer) table.getValueAt(i, column));
+        }        
+        
+        Collections.shuffle(list);  // Shuffle the list
+        
+        for(int i = 0; i < table.getRowCount(); i++) {
+            table.setValueAt(list.get(i), i, column);
+        }
+    }    
 }
