@@ -38,6 +38,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Width is always + 10 and height is always + 35, because of some supernatural phenomenon. 
         // Just do it or you'll be hunted by the blonde spirit knight girl.
         this.setSize(930, 575);
+        this.setResizable(false); // Disable maximize button
         
         // Set location of JFrame to appear in the center
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -511,6 +512,9 @@ public class MainWindow extends javax.swing.JFrame {
         toolbar_clear_table = new javax.swing.JButton();
         toolbar_shuffle_AT = new javax.swing.JButton();
         toolbar_shuffle_BT = new javax.swing.JButton();
+        toolbar_shuffle_P = new javax.swing.JButton();
+        toolbar_table_copy = new javax.swing.JButton();
+        toolbar_table_paste = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         mode_label = new javax.swing.JLabel();
         count_label = new javax.swing.JLabel();
@@ -531,6 +535,8 @@ public class MainWindow extends javax.swing.JFrame {
         mode_label_text = new javax.swing.JLabel();
         time_quantum_label = new javax.swing.JLabel();
         time_quantum_textBox = new javax.swing.JTextField();
+        jSeparator6 = new javax.swing.JSeparator();
+        jSeparator7 = new javax.swing.JSeparator();
         Menu = new javax.swing.JMenuBar();
         Menu_File = new javax.swing.JMenu();
         Menu_File_Exit = new javax.swing.JMenuItem();
@@ -580,7 +586,7 @@ public class MainWindow extends javax.swing.JFrame {
         config_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         config_label.setText("Configurations");
         config_label.setOpaque(true);
-        getContentPane().add(config_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 280, -1));
+        getContentPane().add(config_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 53, 280, 30));
 
         priority_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         priority_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Ascending", "Descending", "Randomize" }));
@@ -589,13 +595,13 @@ public class MainWindow extends javax.swing.JFrame {
         table.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Process No.", "AT", "BT", "Priority", "CT", "TAT", "WT", "TQ"
+                "Process No.", "AT", "BT", "Priority", "CT", "TAT", "WT"
             }
         ));
         jScrollPane1.setViewportView(table);
@@ -698,7 +704,7 @@ public class MainWindow extends javax.swing.JFrame {
         toolBar.add(toolbar_reset);
 
         toolbar_randomize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/dice_24.png"))); // NOI18N
-        toolbar_randomize.setToolTipText("Randomize all inputs");
+        toolbar_randomize.setToolTipText("Randomize All Inputs");
         toolbar_randomize.setFocusable(false);
         toolbar_randomize.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_randomize.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -745,13 +751,49 @@ public class MainWindow extends javax.swing.JFrame {
         });
         toolBar.add(toolbar_shuffle_BT);
 
-        getContentPane().add(toolBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 170, 30));
+        toolbar_shuffle_P.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_P_24.png"))); // NOI18N
+        toolbar_shuffle_P.setToolTipText("Shuffle Priority");
+        toolbar_shuffle_P.setFocusable(false);
+        toolbar_shuffle_P.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_shuffle_P.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_shuffle_P.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_shuffle_PActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_shuffle_P);
+
+        toolbar_table_copy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/table_copy_24.png"))); // NOI18N
+        toolbar_table_copy.setToolTipText("Copy Table Values");
+        toolbar_table_copy.setFocusable(false);
+        toolbar_table_copy.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_table_copy.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_table_copy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_table_copyActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_table_copy);
+
+        toolbar_table_paste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/table_paste_24.png"))); // NOI18N
+        toolbar_table_paste.setToolTipText("Paste Into Table");
+        toolbar_table_paste.setFocusable(false);
+        toolbar_table_paste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbar_table_paste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbar_table_paste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbar_table_pasteActionPerformed(evt);
+            }
+        });
+        toolBar.add(toolbar_table_paste);
+
+        getContentPane().add(toolBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 260, 30));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 15)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Advance Options");
         jLabel7.setOpaque(true);
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 280, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 243, 280, 30));
 
         mode_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         mode_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -826,7 +868,9 @@ public class MainWindow extends javax.swing.JFrame {
         time_quantum_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         time_quantum_label.setText("Time Quantum:");
         getContentPane().add(time_quantum_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 70, 90, -1));
-        getContentPane().add(time_quantum_textBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 68, 50, -1));
+        getContentPane().add(time_quantum_textBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 70, 50, -1));
+        getContentPane().add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 273, 280, 10));
+        getContentPane().add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 83, 280, 10));
 
         Menu_File.setText("File");
         Menu_File.setToolTipText("");
@@ -984,11 +1028,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_clear_tableActionPerformed
 
     private void toolbar_shuffle_BTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_BTActionPerformed
-        TableHandlers.shuffleTableColumn(table, 2); // 2 which is the column of BT.
+        TableHandlers.shuffleTableColumnDouble(table, 2); // 2 which is the column of BT.
     }//GEN-LAST:event_toolbar_shuffle_BTActionPerformed
 
     private void toolbar_shuffle_ATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_ATActionPerformed
-        TableHandlers.shuffleTableColumn(table, 1); // 1 which is the column of AT.
+        TableHandlers.shuffleTableColumnDouble(table, 1); // 1 which is the column of AT.
     }//GEN-LAST:event_toolbar_shuffle_ATActionPerformed
 
     private void Menu_Edit_ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_ResetActionPerformed
@@ -1005,12 +1049,26 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_Menu_Edit_ClearActionPerformed
 
     private void Menu_Edit_Shuffle_ATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_Shuffle_ATActionPerformed
-        TableHandlers.shuffleTableColumn(table, 1); // 1 which is the column of AT.
+        TableHandlers.shuffleTableColumnDouble(table, 1); // 1 which is the column of AT.
     }//GEN-LAST:event_Menu_Edit_Shuffle_ATActionPerformed
 
     private void Menu_Edit_Shuffle_BTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_Edit_Shuffle_BTActionPerformed
-        TableHandlers.shuffleTableColumn(table, 2); // 2 which is the column of BT.
+        TableHandlers.shuffleTableColumnDouble(table, 2); // 2 which is the column of BT.
     }//GEN-LAST:event_Menu_Edit_Shuffle_BTActionPerformed
+
+    private void toolbar_shuffle_PActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_PActionPerformed
+        if(table.getColumnCount() == 7) {
+            TableHandlers.shuffleTableColumnInt(table, 3); // 3 which is the column of Priority.
+        }
+    }//GEN-LAST:event_toolbar_shuffle_PActionPerformed
+
+    private void toolbar_table_copyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_copyActionPerformed
+        TableSystemClipboard.copyTable(table);        
+    }//GEN-LAST:event_toolbar_table_copyActionPerformed
+
+    private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
+        TableSystemClipboard.pasteTable(table);
+    }//GEN-LAST:event_toolbar_table_pasteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1132,6 +1190,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
     private javax.swing.JTable jTable2;
     private javax.swing.JLabel mode_label;
     private javax.swing.JLabel mode_label_text;
@@ -1159,6 +1219,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton toolbar_reset;
     private javax.swing.JButton toolbar_shuffle_AT;
     private javax.swing.JButton toolbar_shuffle_BT;
+    private javax.swing.JButton toolbar_shuffle_P;
+    private javax.swing.JButton toolbar_table_copy;
+    private javax.swing.JButton toolbar_table_paste;
     private javax.swing.JComboBox<String> type_comboBox;
     private javax.swing.JLabel type_label;
     private javax.swing.JLabel type_label_text;

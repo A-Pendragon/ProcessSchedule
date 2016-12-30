@@ -262,7 +262,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="60" width="280" height="-1"/>
+          <AbsoluteConstraints x="0" y="53" width="280" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -307,7 +307,7 @@
               <Font name="SansSerif" size="11" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="8" rowCount="4">
+              <Table columnCount="7" rowCount="4">
                 <Column editable="true" title="Process No." type="java.lang.Object"/>
                 <Column editable="true" title="AT" type="java.lang.Object"/>
                 <Column editable="true" title="BT" type="java.lang.Object"/>
@@ -315,7 +315,6 @@
                 <Column editable="true" title="CT" type="java.lang.Object"/>
                 <Column editable="true" title="TAT" type="java.lang.Object"/>
                 <Column editable="true" title="WT" type="java.lang.Object"/>
-                <Column editable="true" title="TQ" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -627,7 +626,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="10" y="10" width="170" height="30"/>
+          <AbsoluteConstraints x="10" y="10" width="260" height="30"/>
         </Constraint>
       </Constraints>
 
@@ -652,7 +651,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Resources/dice_24.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="Randomize all inputs"/>
+            <Property name="toolTipText" type="java.lang.String" value="Randomize All Inputs"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -703,6 +702,48 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolbar_shuffle_BTActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="toolbar_shuffle_P">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Resources/shuffle_P_24.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Shuffle Priority"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolbar_shuffle_PActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="toolbar_table_copy">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Resources/table_copy_24.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Copy Table Values"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolbar_table_copyActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="toolbar_table_paste">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Resources/table_paste_24.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Paste Into Table"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toolbar_table_pasteActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -716,7 +757,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="250" width="280" height="-1"/>
+          <AbsoluteConstraints x="0" y="243" width="280" height="30"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -951,7 +992,21 @@
     <Component class="javax.swing.JTextField" name="time_quantum_textBox">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="850" y="68" width="50" height="-1"/>
+          <AbsoluteConstraints x="850" y="70" width="50" height="-1"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator6">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="0" y="273" width="280" height="10"/>
+        </Constraint>
+      </Constraints>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator7">
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="0" y="83" width="280" height="10"/>
         </Constraint>
       </Constraints>
     </Component>
