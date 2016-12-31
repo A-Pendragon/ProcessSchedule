@@ -10,9 +10,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
-import java.util.LinkedList;
 import javax.swing.ButtonGroup;
-import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Pendoragon
  */
 public class MainWindow extends javax.swing.JFrame {
-    public static final int NUMBER_PRECISION = 2;
     public String selectedProcessType;
     
     public MainWindow() {

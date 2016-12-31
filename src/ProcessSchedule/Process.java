@@ -5,9 +5,6 @@
  */
 package ProcessSchedule;
 
-import java.util.LinkedList;
-import javax.swing.JTable;
-
 /**
  *
  * @author Chris

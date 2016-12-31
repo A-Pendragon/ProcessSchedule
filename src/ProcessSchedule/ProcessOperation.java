@@ -8,7 +8,6 @@ package ProcessSchedule;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import javax.swing.JTable;
 
 /**
  *
