@@ -223,7 +223,7 @@
             <StringItem index="1" value="Shortest Job First"/>
             <StringItem index="2" value="Shortest Remaining Time First"/>
             <StringItem index="3" value="Non-Preemptive Priority"/>
-            <StringItem index="4" value="Preemptive Priority "/>
+            <StringItem index="4" value="Preemptive Priority"/>
             <StringItem index="5" value="Round Robin"/>
           </StringArray>
         </Property>

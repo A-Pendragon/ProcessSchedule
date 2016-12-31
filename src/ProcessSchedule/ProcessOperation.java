@@ -24,6 +24,8 @@ public class ProcessOperation {
     private double averageWaitingTime;
     private int timeQuantum;
     
+    private LinkedList<Double> listOfAT = new LinkedList<>();
+    
     public ProcessOperation(LinkedList<Process> processList){
         this.averageTurnAroundTime = this.averageWaitingTime = this.totalProcessTime = 0;
         this.processInitStorage = new LinkedList<>();
@@ -45,7 +47,7 @@ public class ProcessOperation {
             for(int i = 0; i < this.arrivalQueue.size(); i++){
                 if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
                     this.requestQueue.add(this.arrivalQueue.get(i));
-                    tempQueue.add(this.arrivalQueue.get(i));
+                    tempQueue.add(this.arrivalQueue.get(i));                    
                 }
             }this.arrivalQueue.removeAll(tempQueue);      
             Collections.sort(this.requestQueue, processComparator);
@@ -220,6 +222,7 @@ public class ProcessOperation {
         this.averageWaitingTime = this.computeAverageTime(wtList);
     }
     
+    /*
     @Override
     public String toString(){
         return "\nInitial Process Value:" + this.processInitStorage +
@@ -229,6 +232,16 @@ public class ProcessOperation {
                "\nAverage Turn Around Time(" + Double.toString(this.averageTurnAroundTime) + ")" +
                "\nAverage Waiting Time(" + Double.toString(this.averageWaitingTime) + ")" +
                "\nCurrent Time Quantum (if implemented)(" + Integer.toString(this.timeQuantum) + ")";
+    }
+    */
+    
+    @Override
+    public String toString(){
+        String formatedString = this.processComputation.toString()
+            .replace("[", " ")  //remove the right bracket 
+            .replace(",", "")  //remove the commas                                   
+            .replace("]", ""); //remove the left bracket
+        return formatedString;
     }
 
     public LinkedList<Process> getProcessInitStorage() {
@@ -257,5 +270,5 @@ public class ProcessOperation {
 
     public int getTimeQuantum() {
         return timeQuantum;
-    } 
+    }        
 }

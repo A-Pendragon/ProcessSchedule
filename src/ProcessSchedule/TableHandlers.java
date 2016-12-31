@@ -7,6 +7,7 @@ package ProcessSchedule;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.StringTokenizer;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -181,5 +182,37 @@ public class TableHandlers {
         for(int i = 0; i < table.getRowCount(); i++) {
             table.setValueAt(list.get(i), i, column);
         }
-    }    
+    }
+    
+    // Returns the table cell value into double.
+    public static double tableValueToDouble(JTable table, int row, int col) {
+        return Double.parseDouble(String.valueOf(table.getValueAt(row, col)));
+    }
+    
+    // Returns the table cell value into int.
+    public static int tableValueToInteger(JTable table, int row, int col) {
+        return Integer.parseInt(String.valueOf(table.getValueAt(row, col)));
+    }
+    
+    public static void insertIntoTable(JTable table, String string) {                
+        StringTokenizer stringTokenizer = new StringTokenizer(string, "\n"); // Used as a condition in the for loop, to know if there are still more columns.
+
+        String rowString, value;
+
+        for(int i = 0; stringTokenizer.hasMoreTokens(); i++) {
+            rowString = stringTokenizer.nextToken();                
+            StringTokenizer stringTokenizer2 = new StringTokenizer(rowString, "\t"); // Used as a condition in the for loop, to know if there are more element in the row.
+
+            for(int j = 0; stringTokenizer2.hasMoreTokens(); j++) {
+                value = (String)stringTokenizer2.nextToken(); // Store the next token (which are the values in the cell) in the string value.                
+                
+                if(i < table.getRowCount() && j < table.getColumnCount()) {
+                    if(j == 3 && table.getColumnCount() != 7) {
+                        value = (String)stringTokenizer2.nextToken();
+                    }
+                    table.setValueAt(value.trim(), i, j);
+                }                    
+            }
+        }
+    }
 }

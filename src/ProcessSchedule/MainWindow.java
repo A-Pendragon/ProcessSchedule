@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.LinkedList;
 import javax.swing.ButtonGroup;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -574,7 +575,7 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         type_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        type_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Come First Serve", "Shortest Job First", "Shortest Remaining Time First", "Non-Preemptive Priority", "Preemptive Priority ", "Round Robin" }));
+        type_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "First Come First Serve", "Shortest Job First", "Shortest Remaining Time First", "Non-Preemptive Priority", "Preemptive Priority", "Round Robin" }));
         getContentPane().add(type_comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 200, 32));
 
         config_type_label.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -1075,11 +1076,18 @@ public class MainWindow extends javax.swing.JFrame {
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
         TableSystemClipboard.pasteTable(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
-
+                
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-       
+        String processType = (String)type_comboBox.getSelectedItem();                            
+        
+        ProcessOperation pa = new ProcessOperation(Process.addValuesToProcess(processType, table)); // Add process from table.
+        Process.doProcessOperation(processType, pa); // Do the Process operation.
+                
+        System.out.println(pa.toString());
+        TableHandlers.insertIntoTable(table, pa.toString());
     }//GEN-LAST:event_computeButtonActionPerformed
     //</editor-fold>
+   
     /**
      * @param args the command line arguments
      */
@@ -1139,18 +1147,19 @@ public class MainWindow extends javax.swing.JFrame {
             new MainWindow().setVisible(true);
         });
         
-        /*Example provided with the use of schedule function*/
-        
+        /*Example provided with the use of schedule function*/                
+        /*
         LinkedList<Process> plist = new LinkedList<>();
-        plist.add(new Process(1,0,7,2));
-        plist.add(new Process(2,1,5,3));
-        plist.add(new Process(3,0,3,5));
-        plist.add(new Process(4,3,1,1));
+        plist.add(new Process(1, 0, 7.1, 2));
+        plist.add(new Process(2, 1, 5.1, 3));
+        plist.add(new Process(3, 0, 3.1, 5));
+        plist.add(new Process(4, 3, 1.1, 1));
         ProcessOperation pa = new ProcessOperation(plist);
-        pa.nonPreemptiveSchedule("nppriority");
-        //pa.preemptiveSchedule("shortestremainingtime");
+        //pa.nonPreemptiveSchedule("nppriority");
+        pa.preemptiveSchedule("shortestremainingtime");
         //pa.roundRobinSchedule(3);
-        System.out.println(pa.toString());
+        System.out.println(pa.toString());                
+        */
     }
     //<editor-fold defaultstate="collapsed" desc="Netbeans Generated Variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables

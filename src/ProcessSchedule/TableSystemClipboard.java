@@ -58,7 +58,7 @@ public class TableSystemClipboard {
                 
                 for(int j = 0; stringTokenizer2.hasMoreTokens(); j++) {
                     value = (String)stringTokenizer2.nextToken(); // Store the next token (which are the values in the cell) in the string value.
-                    
+                                        
                     if(i < table.getRowCount() && j < table.getColumnCount()) {
                         table.setValueAt(value, i, j);
                     }                    

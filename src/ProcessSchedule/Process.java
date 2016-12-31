@@ -5,6 +5,9 @@
  */
 package ProcessSchedule;
 
+import java.util.LinkedList;
+import javax.swing.JTable;
+
 /**
  *
  * @author Chris
@@ -49,11 +52,24 @@ public class Process {
         this.waitingTime = p.waitingTime;
     }
     
+    /*
     @Override
     public String toString(){
         return "\n>> PNO(" + Integer.toString(this.processNo) + ") "+
                ">> AT(" + Double.toString(this.arrivalTime) + ") BT(" + Double.toString(this.burstTime) + ") Priority(" + Integer.toString(this.priority) + ") " + 
                ">> CT(" + Double.toString(this.completionTime) + ") TAT(" + Double.toString(this.turnAroundTime) + ") WT(" + Double.toString(this.waitingTime) + ") ";
+    }
+    */
+    
+    @Override
+    public String toString(){
+        return Integer.toString(this.processNo) + "\t" +
+               Double.toString(this.arrivalTime) + "\t" + 
+               Double.toString(this.burstTime) + "\t" + 
+               Integer.toString(this.priority) + "\t" + 
+               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.completionTime)) + "\t" + 
+               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.turnAroundTime)) + "\t" + 
+               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.waitingTime)) + "\n";
     }
     
     @Override
@@ -128,5 +144,52 @@ public class Process {
     public Process computeWaitingTime() {
         this.waitingTime = this.turnAroundTime - this.burstTime;
         return this;
+    }
+    
+    //////////
+    
+    public static LinkedList<Process> addValuesToProcess(String processType, JTable table) {
+        LinkedList<Process> plist = new LinkedList<>();
+        
+        switch (processType) {
+            case "First Come First Serve":
+            case "Shortest Job First":
+            case "Shortest Remaining Time First":
+            case "Round Robin":
+                for(int i = 0; i < table.getRowCount(); i++) {
+                    plist.add(new Process(TableHandlers.tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2)));
+                }   break;
+            case "Non-Preemptive Priority":
+            case "Preemptive Priority":
+                for(int i = 0; i < table.getRowCount(); i++) {
+                    plist.add(new Process(TableHandlers.tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2), TableHandlers.tableValueToInteger(table, i, 3)));                
+                }   break;                            
+            default:
+                break;
+        }
+        
+        return plist;
+    }
+    
+    public static void doProcessOperation(String processType, ProcessOperation pa) {
+        switch (processType) {
+            case "First Come First Serve":
+                pa.nonPreemptiveSchedule("firstcomefirstserve");
+                break;
+            case "Shortest Job First":
+                pa.nonPreemptiveSchedule("shortestjobfirst");
+                break;
+            case "Non-Preemptive Priority":
+                pa.nonPreemptiveSchedule("nppriority");
+                break;
+            case "Shortest Remaining Time First":
+                pa.preemptiveSchedule("shortestremainingtime");
+                break;
+            case "Preemptive Priority":
+                pa.preemptiveSchedule("ppriority");
+                break;
+            default:
+                break;
+        }
     }
 }
