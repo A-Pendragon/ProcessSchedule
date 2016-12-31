@@ -108,7 +108,12 @@ public class ProcessOperation {
                     this.requestQueue.add(this.arrivalQueue.get(i));
                     tempQueue.add(this.arrivalQueue.get(i));                    
                 }
-            }this.arrivalQueue.removeAll(tempQueue);      
+            }this.arrivalQueue.removeAll(tempQueue); 
+            if(this.requestQueue.isEmpty()){
+                this.requestQueue.add(this.arrivalQueue.removeFirst());
+                this.totalProcessTime = this.requestQueue.getLast().getArrivalTime();
+                continue;
+            }
             Collections.sort(this.requestQueue, processComparator);
             Process currentProcess = this.requestQueue.removeFirst();
             this.totalProcessTime += currentProcess.getBurstTime();
@@ -157,6 +162,11 @@ public class ProcessOperation {
                     tempQueue.add(this.arrivalQueue.get(i));
                 }
             }this.arrivalQueue.removeAll(tempQueue);
+            if(this.requestQueue.isEmpty()){
+                this.requestQueue.add(this.arrivalQueue.removeFirst());
+                this.totalProcessTime = this.requestQueue.getLast().getArrivalTime();
+                continue;
+            }
             Collections.sort(this.requestQueue, processComparator);
             Process currentProcess = new Process(this.requestQueue.getFirst());
             currentProcess.setBurstTime(this.unitIntervalPrecision);

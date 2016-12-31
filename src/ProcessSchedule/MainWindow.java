@@ -57,15 +57,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Add action listeners to the at combo box for the labels in the advanced options.
         // The label will change in accordance to the selected item.         
         at_comboBox.addActionListener((ActionEvent event) -> {
-            int selectedIndex = at_comboBox.getSelectedIndex();
-            
-            if(selectedIndex == 3) {
-                at_first_label.setText("Min");
-                at_second_label.setText("Max");                
-            } else {
-                at_first_label.setText("Start");
-                at_second_label.setText("Step");                
-            }     
+            int selectedIndex = at_comboBox.getSelectedIndex();  
             
             if(selectedIndex == 0) {
                 at_first_label.setEnabled(false);
@@ -77,21 +69,24 @@ public class MainWindow extends javax.swing.JFrame {
                 at_first_textField.setEnabled(true);
                 at_second_label.setEnabled(true);
                 at_second_textField.setEnabled(true);
+                at_first_textField.setText("0");
+                at_second_textField.setText("0");
+                bt_comboBox.setEnabled(true);
             }
+                        
+            if(selectedIndex == 3) {
+                at_first_label.setText("Min");
+                at_second_label.setText("Max");                
+            } else {
+                at_first_label.setText("Start");
+                at_second_label.setText("Step");                
+            }  
         });
         
         // Add action listeners to the bt combo box for the labels in the advanced options.
         // The label will change in accordance to the selected item.
         bt_comboBox.addActionListener((ActionEvent event) -> {
             int selectedIndex = bt_comboBox.getSelectedIndex();
-            
-            if(selectedIndex == 3) {
-                bt_first_label.setText("Min");
-                bt_second_label.setText("Max");
-            } else {
-                bt_first_label.setText("Start");
-                bt_second_label.setText("Step");
-            }    
             
             if(selectedIndex == 0) {
                 bt_first_label.setEnabled(false);
@@ -103,7 +98,22 @@ public class MainWindow extends javax.swing.JFrame {
                 bt_first_textField.setEnabled(true);
                 bt_second_label.setEnabled(true);
                 bt_second_textField.setEnabled(true);
+                bt_first_textField.setText("1");
+                bt_second_textField.setText("0");
+                ao_button.setEnabled(true);
             }
+            
+            
+            if(selectedIndex == 3) {
+                bt_first_label.setText("Min");
+                bt_second_label.setText("Max");
+                bt_first_textField.setText("1");
+                bt_second_textField.setText("1");
+            } else {
+                bt_first_label.setText("Start");
+                bt_second_label.setText("Step");
+            }    
+            
         });
         
         //<editor-fold defaultstate="collapsed" desc="Application Themes">
@@ -273,7 +283,7 @@ public class MainWindow extends javax.swing.JFrame {
         bgTheme.add(theme_Luna);
         bgTheme.add(theme_Texture);
                         
-        theme_Aero.setSelected(true); // Set default theme (Aero) to selected                     
+        theme_Mint.setSelected(true); // Set default theme (Aero) to selected                     
     }
     //</editor-fold>
     
@@ -425,6 +435,7 @@ public class MainWindow extends javax.swing.JFrame {
             default:
                 break;
         }
+        this.computeButton.setEnabled(true);
     }
     //</editor-fold>
     
@@ -473,6 +484,18 @@ public class MainWindow extends javax.swing.JFrame {
     }
     //</editor-fold>
     
+    private void enableAllInputs(boolean bool){
+        this.toolbar_reset.setEnabled(bool);
+        this.toolbar_clear_table.setEnabled(bool);
+        this.toolbar_shuffle_AT.setEnabled(bool);
+        this.toolbar_shuffle_BT.setEnabled(bool);
+        this.toolbar_shuffle_P.setEnabled(bool);
+        this.toolbar_table_copy.setEnabled(bool);
+        this.toolbar_table_paste.setEnabled(bool);
+        this.at_comboBox.setEnabled(bool);
+        this.bt_comboBox.setEnabled(bool);
+        this.ao_button.setEnabled(bool);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -625,6 +648,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         computeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         computeButton.setText("Compute");
+        computeButton.setEnabled(false);
         computeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 computeButtonActionPerformed(evt);
@@ -645,6 +669,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         ao_button.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         ao_button.setText("Apply");
+        ao_button.setEnabled(false);
         ao_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ao_buttonActionPerformed(evt);
@@ -683,10 +708,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         at_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         at_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Ascending", "Descending", "Randomize" }));
+        at_comboBox.setEnabled(false);
         getContentPane().add(at_comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 100, 32));
 
         bt_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         bt_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Ascending", "Descending", "Randomize" }));
+        bt_comboBox.setEnabled(false);
         getContentPane().add(bt_comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 370, 100, 32));
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -697,6 +724,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_reset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/reset_24.png"))); // NOI18N
         toolbar_reset.setToolTipText("Reset All");
+        toolbar_reset.setEnabled(false);
         toolbar_reset.setFocusable(false);
         toolbar_reset.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_reset.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -721,6 +749,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_clear_table.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/empty_table_24.png"))); // NOI18N
         toolbar_clear_table.setToolTipText("Clear Table");
+        toolbar_clear_table.setEnabled(false);
         toolbar_clear_table.setFocusable(false);
         toolbar_clear_table.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_clear_table.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -733,6 +762,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_shuffle_AT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_AT_24.png"))); // NOI18N
         toolbar_shuffle_AT.setToolTipText("Shuffle Arrival Time (AT)");
+        toolbar_shuffle_AT.setEnabled(false);
         toolbar_shuffle_AT.setFocusable(false);
         toolbar_shuffle_AT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_shuffle_AT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -745,6 +775,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_shuffle_BT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_BT_24.png"))); // NOI18N
         toolbar_shuffle_BT.setToolTipText("Shuffle Burst Time (BT)");
+        toolbar_shuffle_BT.setEnabled(false);
         toolbar_shuffle_BT.setFocusable(false);
         toolbar_shuffle_BT.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_shuffle_BT.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -757,6 +788,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_shuffle_P.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/shuffle_P_24.png"))); // NOI18N
         toolbar_shuffle_P.setToolTipText("Shuffle Priority");
+        toolbar_shuffle_P.setEnabled(false);
         toolbar_shuffle_P.setFocusable(false);
         toolbar_shuffle_P.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_shuffle_P.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -769,6 +801,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_table_copy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/table_copy_24.png"))); // NOI18N
         toolbar_table_copy.setToolTipText("Copy Table Values");
+        toolbar_table_copy.setEnabled(false);
         toolbar_table_copy.setFocusable(false);
         toolbar_table_copy.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_table_copy.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -781,6 +814,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolbar_table_paste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/table_paste_24.png"))); // NOI18N
         toolbar_table_paste.setToolTipText("Paste Into Table");
+        toolbar_table_paste.setEnabled(false);
         toolbar_table_paste.setFocusable(false);
         toolbar_table_paste.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_table_paste.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -1013,23 +1047,47 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void config_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_config_buttonActionPerformed
         configurationsHandler();
+        this.enableAllInputs(false);
+        this.computeButton.setEnabled(false);
+        //override
+        this.bt_comboBox.setSelectedIndex(0);
+        this.bt_first_textField.setEnabled(false);
+        this.bt_second_textField.setEnabled(false);
+        this.toolbar_reset.setEnabled(true);
+        this.at_comboBox.setEnabled(true);
+        this.toolbar_table_copy.setEnabled(true);
+        this.toolbar_table_paste.setEnabled(true);
+        this.at_comboBox.setSelectedIndex(0);
+        
     }//GEN-LAST:event_config_buttonActionPerformed
                 
     private void ao_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ao_buttonActionPerformed
         advanceOptionsHandler();
+        this.computeButton.setEnabled(true);
+        this.toolbar_clear_table.setEnabled(true);
+        this.toolbar_shuffle_AT.setEnabled(true);
+        this.toolbar_shuffle_BT.setEnabled(true);
+        this.toolbar_shuffle_P.setEnabled(true);
     }//GEN-LAST:event_ao_buttonActionPerformed
 
     private void toolbar_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_resetActionPerformed
         setComponentsToDefault();
+        this.enableAllInputs(false);
+        this.computeButton.setEnabled(false);
     }//GEN-LAST:event_toolbar_resetActionPerformed
             
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
         randomizeAllInputs();
+        this.enableAllInputs(true);
+        this.computeButton.setEnabled(true);
+        this.toolbar_clear_table.setEnabled(true);
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     private void toolbar_clear_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_clear_tableActionPerformed
         TableHandlers.clearTable(table);
         TableHandlers.setProcessNumber(table);
+        this.computeButton.setEnabled(false);
+        this.toolbar_clear_table.setEnabled(false);
     }//GEN-LAST:event_toolbar_clear_tableActionPerformed
 
     private void toolbar_shuffle_BTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_shuffle_BTActionPerformed
@@ -1085,6 +1143,9 @@ public class MainWindow extends javax.swing.JFrame {
         
         System.out.println(pa.toString());
         TableHandlers.insertIntoTable(table, pa.toString());
+        this.toolbar_shuffle_AT.setEnabled(false);
+        this.toolbar_shuffle_BT.setEnabled(false);
+        this.toolbar_shuffle_P.setEnabled(false);
     }//GEN-LAST:event_computeButtonActionPerformed
     //</editor-fold>
    
