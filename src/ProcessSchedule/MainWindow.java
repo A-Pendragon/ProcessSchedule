@@ -1007,6 +1007,7 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //<editor-fold defaultstate="collapsed" desc="Main Window Event Handlers">
     private void Menu_File_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Menu_File_ExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_Menu_File_ExitActionPerformed
@@ -1078,7 +1079,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
        
     }//GEN-LAST:event_computeButtonActionPerformed
-
+    //</editor-fold>
     /**
      * @param args the command line arguments
      */
@@ -1145,14 +1146,13 @@ public class MainWindow extends javax.swing.JFrame {
         plist.add(new Process(2,1,5,3));
         plist.add(new Process(3,0,3,5));
         plist.add(new Process(4,3,1,1));
-        //plist.add(new Process(5,5,1));
-        ProcessOperation pa = new ProcessOperation(plist, 0);
-        //pa.nonPreemptiveSchedule("firstcomefirstserve");
-        pa.preemptiveSchedule("nppriority");
-        //pa.schedule("shortestjobfirst");
-        //System.out.println(pa.toString());
+        ProcessOperation pa = new ProcessOperation(plist);
+        pa.nonPreemptiveSchedule("nppriority");
+        //pa.preemptiveSchedule("shortestremainingtime");
+        //pa.roundRobinSchedule(3);
+        System.out.println(pa.toString());
     }
-
+    //<editor-fold defaultstate="collapsed" desc="Netbeans Generated Variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar Menu;
     private javax.swing.JMenu Menu_Edit;
@@ -1236,4 +1236,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel type_label;
     private javax.swing.JLabel type_label_text;
     // End of variables declaration//GEN-END:variables
+ //</editor-fold>
 }
