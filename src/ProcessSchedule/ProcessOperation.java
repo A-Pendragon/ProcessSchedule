@@ -8,12 +8,14 @@ package ProcessSchedule;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
+import javax.swing.JTable;
 
 /**
  *
  * @author Chris
  */
 public class ProcessOperation {
+
     private final LinkedList<Process> processInitStorage;
     private final LinkedList<Process> processComputation;
     private final LinkedList<Process> processSchedule;
@@ -24,8 +26,6 @@ public class ProcessOperation {
     private double averageWaitingTime;
     private double unitIntervalPrecision;
     private double timeQuantum;
-    
-    private LinkedList<Double> listOfAT = new LinkedList<>();
     
     public ProcessOperation(LinkedList<Process> processList){
         this.averageTurnAroundTime = this.averageWaitingTime = this.totalProcessTime = 0;
@@ -66,6 +66,7 @@ public class ProcessOperation {
                 tempQueue.add(this.arrivalQueue.get(i));
             }
         }this.arrivalQueue.removeAll(tempQueue);
+        this.totalProcessTime += this.requestQueue.getFirst().getArrivalTime();
     }
     
     private void setPrecision(){

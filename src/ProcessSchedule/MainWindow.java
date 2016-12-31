@@ -593,6 +593,7 @@ public class MainWindow extends javax.swing.JFrame {
         priority_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Ascending", "Descending", "Randomize" }));
         getContentPane().add(priority_comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 420, 200, 32));
 
+        table.setAutoCreateRowSorter(true);
         table.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1078,9 +1079,13 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
                 
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-        ProcessOperation pa = new ProcessOperation(Process.addValuesToProcess(selectedProcessType, table)); // Add process from table.
-        Process.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
+        ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.
+        TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
                 
+        System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
+               "\nComputed Process Value:" + pa.getProcessComputation() +
+               "\nScheduled Process Value:" + pa.getProcessSchedule());
+        
         System.out.println(pa.toString());
         TableHandlers.insertIntoTable(table, pa.toString());
     }//GEN-LAST:event_computeButtonActionPerformed
