@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Pendoragon
  */
 public class MainWindow extends javax.swing.JFrame {
-        
+    public static final int NUMBER_PRECISION = 2;    
     public MainWindow() {
         initComponents();
         initJFrame();
@@ -1142,15 +1142,16 @@ public class MainWindow extends javax.swing.JFrame {
         /*Example provided with the use of schedule function*/
         
         LinkedList<Process> plist = new LinkedList<>();
-        plist.add(new Process(1,0,7,2));
-        plist.add(new Process(2,1,5,3));
-        plist.add(new Process(3,0,3,5));
-        plist.add(new Process(4,3,1,1));
+        plist.add(new Process(1,0,7.1,2));
+        plist.add(new Process(2,1,5.1,3));
+        plist.add(new Process(3,0,3.1,5));
+        plist.add(new Process(4,3,1.1,1));
         ProcessOperation pa = new ProcessOperation(plist);
-        pa.nonPreemptiveSchedule("nppriority");
-        //pa.preemptiveSchedule("shortestremainingtime");
-        //pa.roundRobinSchedule(3);
+        //pa.nonPreemptiveSchedule("nppriority");
+       // pa.preemptiveSchedule("ppriority");
+        pa.roundRobinSchedule(3.0);
         System.out.println(pa.toString());
+        System.out.println(Double.toString((double)120.64 - .1));
     }
     //<editor-fold defaultstate="collapsed" desc="Netbeans Generated Variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables

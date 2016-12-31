@@ -17,12 +17,8 @@ public class Process {
     private double completionTime;
     private double turnAroundTime;
     private double waitingTime;
+    public static int precision = 2;
     
-    public Process(){
-        this.processNo = this.priority = 0;
-        this.arrivalTime = this.burstTime = this.completionTime = this.turnAroundTime = this.waitingTime = 0;
-    }
-
     public Process(int processNo, double arrivalTime, double burstTime) {
         this.processNo = processNo;
         this.arrivalTime = arrivalTime;
@@ -30,8 +26,16 @@ public class Process {
         this.priority = 0;
         this.completionTime = this.turnAroundTime = this.waitingTime = 0;
     }
+    
+    public Process(int processNo, double arrivalTime, double burstTime, int precision) {
+        this.processNo = processNo;
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.priority = 0;
+        this.completionTime = this.turnAroundTime = this.waitingTime = 0;
+    }
 
-    public Process(int processNo, double arrivalTime, double burstTime, int priority) {
+    public Process(int processNo, double arrivalTime, double burstTime, int priority, int precision) {
         this.processNo = processNo;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
@@ -47,6 +51,13 @@ public class Process {
         this.completionTime = p.completionTime;
         this.turnAroundTime = p.turnAroundTime;
         this.waitingTime = p.waitingTime;
+    }
+    
+    private double round(double number){
+        int numberOfPrecision = 1;
+        for(int i = 0; i < Process.precision; i++){
+            numberOfPrecision *= 10;
+        }return (double)Math.round(number * numberOfPrecision) / numberOfPrecision;
     }
     
     @Override
@@ -84,7 +95,7 @@ public class Process {
     }
 
     public void setArrivalTime(double arrivalTime) {
-        this.arrivalTime = arrivalTime;
+        this.arrivalTime = this.round(arrivalTime);
     }
 
     public double getBurstTime() {
@@ -92,7 +103,7 @@ public class Process {
     }
 
     public void setBurstTime(double burstTime) {
-        this.burstTime = burstTime;
+        this.burstTime = this.round(burstTime);
     }
 
     public int getPriority() {
@@ -108,7 +119,7 @@ public class Process {
     }
 
     public Process setCompletionTime(double completionTime) {
-        this.completionTime = completionTime;
+        this.completionTime = this.round(completionTime);
         return this;
     }
 
@@ -117,7 +128,7 @@ public class Process {
     }
 
     public Process computeTurnAroundTime() {
-        this.turnAroundTime = this.completionTime - this.arrivalTime;
+        this.turnAroundTime = this.round(this.completionTime - this.arrivalTime);
         return this;
     }
 
@@ -126,7 +137,7 @@ public class Process {
     }
 
     public Process computeWaitingTime() {
-        this.waitingTime = this.turnAroundTime - this.burstTime;
+        this.waitingTime = this.round(this.turnAroundTime - this.burstTime);
         return this;
     }
 }
