@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Pendoragon
  */
 public class MainWindow extends javax.swing.JFrame {
-        
+    public static final int NUMBER_PRECISION = 2;    
     public MainWindow() {
         initComponents();
         initJFrame();
