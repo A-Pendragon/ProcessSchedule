@@ -492,7 +492,7 @@ public class MainWindow extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        computeButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -624,9 +624,14 @@ public class MainWindow extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 600, 40));
 
-        jButton3.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jButton3.setText("Compute");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, 80, 32));
+        computeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        computeButton.setText("Compute");
+        computeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computeButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(computeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, 80, 32));
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1070,6 +1075,10 @@ public class MainWindow extends javax.swing.JFrame {
         TableSystemClipboard.pasteTable(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
 
+    private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
+       
+    }//GEN-LAST:event_computeButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1130,6 +1139,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         
         /*Example provided with the use of schedule function*/
+        
         LinkedList<Process> plist = new LinkedList<>();
         plist.add(new Process(1,0,7,2));
         plist.add(new Process(2,1,5,3));
@@ -1164,6 +1174,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField bt_first_textField;
     private javax.swing.JLabel bt_second_label;
     private javax.swing.JTextField bt_second_textField;
+    private javax.swing.JButton computeButton;
     private javax.swing.JButton config_button;
     private javax.swing.JLabel config_count_label;
     private javax.swing.JLabel config_label;
@@ -1173,7 +1184,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel count_label_text;
     private javax.swing.JLabel criterion_label;
     private javax.swing.JLabel criterion_label_text;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel6;
