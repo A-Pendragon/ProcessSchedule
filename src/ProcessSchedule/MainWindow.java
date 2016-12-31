@@ -24,7 +24,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Pendoragon
  */
 public class MainWindow extends javax.swing.JFrame {
-    public static final int NUMBER_PRECISION = 2;    
+    public static final int NUMBER_PRECISION = 2;
+    public String selectedProcessType;
+    
     public MainWindow() {
         initComponents();
         initJFrame();
@@ -431,16 +433,14 @@ public class MainWindow extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Configurations Handler">
     private void configurationsHandler() {
-        int type_selected_index = type_comboBox.getSelectedIndex();
+        selectedProcessType = (String)type_comboBox.getSelectedItem();
         int row_count = Integer.valueOf((String)count_comboBox.getSelectedItem());
         
-        TableHandlers.setTable(type_selected_index, row_count, table);
-        TableHandlers.setLabels(type_selected_index, type_label_text, count_label_text, mode_label_text, criterion_label_text, type_comboBox, count_comboBox);
-        
-        int selectedIndex = type_comboBox.getSelectedIndex();
-        
+        TableHandlers.setTable(selectedProcessType, row_count, table);
+        TableHandlers.setLabels(selectedProcessType, type_label_text, count_label_text, mode_label_text, criterion_label_text, type_comboBox, count_comboBox);
+                
         // Sets the priority label and combo box to enabled or disabled depending on the selected type of process.
-        if(selectedIndex == 3 || selectedIndex == 4) {
+        if(selectedProcessType.equals("Non-Preemptive Priority") || selectedProcessType.equals("Preemptive Priority")) {
             priority_label.setEnabled(true);
             priority_comboBox.setEnabled(true);
         } else {
@@ -448,7 +448,7 @@ public class MainWindow extends javax.swing.JFrame {
             priority_comboBox.setEnabled(false);
         }
         
-        if(selectedIndex == 5) {
+        if(selectedProcessType.equals("Round Robin")) {
             time_quantum_label.setEnabled(true);
             time_quantum_textBox.setEnabled(true);
         } else {
@@ -1078,10 +1078,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
                 
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-        String processType = (String)type_comboBox.getSelectedItem();                            
-        
-        ProcessOperation pa = new ProcessOperation(Process.addValuesToProcess(processType, table)); // Add process from table.
-        Process.doProcessOperation(processType, pa); // Do the Process operation.
+        ProcessOperation pa = new ProcessOperation(Process.addValuesToProcess(selectedProcessType, table)); // Add process from table.
+        Process.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
                 
         System.out.println(pa.toString());
         TableHandlers.insertIntoTable(table, pa.toString());
