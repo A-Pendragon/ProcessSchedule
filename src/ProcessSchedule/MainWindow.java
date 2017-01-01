@@ -391,7 +391,7 @@ public class MainWindow extends javax.swing.JFrame {
         String bt_second_str = NumericHandlers.removeAllNonNumeric(bt_second_textField.getText());        
         
         // Remove all 0 (If user intentionally inputted a 0, although the default is 1) with 1 in the burst time inputs
-        bt_first_str = NumericHandlers.replaceStringWith(bt_first_textField.getText(), "0", "1");
+        bt_first_str = NumericHandlers.replaceZeroAndEmptyWith(bt_first_str, "1");
         
         // Update the text fields
         at_first_textField.setText(at_first_str);
