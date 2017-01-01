@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -23,14 +24,23 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainWindow extends javax.swing.JFrame {
     public String selectedProcessType;
+    public JTable previousTable;
     
     public MainWindow() {
         initComponents();
         initJFrame();
+        initGlobalVariables();
         initListeners();
     }
     
-    //<editor-fold defaultstate="collapsed" desc="JFrame initializations">
+    //<editor-fold defaultstate="collapsed" desc="Global Variables Initializations">
+    private void initGlobalVariables() {
+        selectedProcessType = (String)type_comboBox.getSelectedItem();
+        previousTable = table;
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="JFrame Initializations">
     /**
      * Initializations of the JFrame and its elements
      */
@@ -635,7 +645,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         computeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         computeButton.setText("Compute");
-        computeButton.setEnabled(false);
         computeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 computeButtonActionPerformed(evt);
@@ -1080,7 +1089,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_shuffle_PActionPerformed
 
     private void toolbar_table_copyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_copyActionPerformed
-        TableSystemClipboard.copyTable(table);        
+        TableSystemClipboard.copyTable(table);
+        previousTable = table;
     }//GEN-LAST:event_toolbar_table_copyActionPerformed
 
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed

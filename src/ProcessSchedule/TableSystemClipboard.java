@@ -52,16 +52,13 @@ public class TableSystemClipboard {
             
             String rowString, value;
             
-            for(int i = 0; stringTokenizer.hasMoreTokens(); i++) {
+            for(int i = 0; i < table.getRowCount() && stringTokenizer.hasMoreTokens(); i++) {                
                 rowString = stringTokenizer.nextToken();                
                 StringTokenizer stringTokenizer2 = new StringTokenizer(rowString, "\t"); // Used as a condition in the for loop, to know if there are more element in the row.
                 
-                for(int j = 0; stringTokenizer2.hasMoreTokens(); j++) {
-                    value = (String)stringTokenizer2.nextToken(); // Store the next token (which are the values in the cell) in the string value.
-                                        
-                    if(i < table.getRowCount() && j < table.getColumnCount()) {
-                        table.setValueAt(value, i, j);
-                    }                    
+                for(int j = 0; j < table.getColumnCount() && stringTokenizer2.hasMoreTokens(); j++) {             
+                    value = (String)stringTokenizer2.nextToken(); // Store the next token (which are the values in the cell) in the string value.                                        
+                    table.setValueAt(value, i, j);
                 }
             }
         } catch (UnsupportedFlavorException | IOException ex) {
