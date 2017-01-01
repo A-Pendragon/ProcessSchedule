@@ -570,7 +570,8 @@ public class MainWindow extends javax.swing.JFrame {
         table = new javax.swing.JTable(){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return !(column == this.getColumnCount()-1 ||
+                return !(column == 0 ||
+                    column == this.getColumnCount()-1 ||
                     column == this.getColumnCount()-2 ||
                     column == this.getColumnCount()-3);
             };
