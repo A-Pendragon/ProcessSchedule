@@ -85,7 +85,8 @@ public class TableHandlers {
         tableHeader.repaint();
         table.getTableHeader().setReorderingAllowed(false); // Disable table column dragging.
         centerTableHorizontalAlignment(table);
-        setProcessNumber(table);
+        clearTable(table);
+        setProcessNumber(table);                
     }
     
     public static void setGanttChart(JTable table) {
@@ -151,7 +152,7 @@ public class TableHandlers {
     public static void clearTable(JTable table) {
         for(int j = 0; j < table.getColumnCount(); j++) {
             for(int i = 0; i < table.getRowCount(); i++) {
-                table.setValueAt(null, i, j);
+                table.setValueAt("", i, j);
             }
         }
     }
@@ -277,6 +278,26 @@ public class TableHandlers {
                         table.setValueAt("", j, i);
                     }
                 }
+            }
+        }
+    }  
+    
+    public static void validateTable(JTable table) {
+        int columnLimit = table.getColumnCount() - 3;
+        for(int i = 1; i < columnLimit; i++) {
+            for(int j = 0; j < table.getRowCount(); j++) {                
+                String value_str = String.valueOf(table.getValueAt(j, i));
+                // If the type has priority and the column is equal to priority
+                if(table.getColumnCount() == 7 && i == 3) {                    
+                    int value = Integer.parseInt(NumericHandlers.replaceZeroAndEmptyWith(value_str, "1"));
+                    table.setValueAt(value, j, i);
+                } else if(i == 2) {
+                    double value = Double.parseDouble(NumericHandlers.replaceZeroAndEmptyWith(value_str, "1.0"));
+                    table.setValueAt(value, j, i);
+                } else {
+                    double value = Double.parseDouble(NumericHandlers.removeAllNonNumeric(value_str));
+                    table.setValueAt(value, j, i);
+                }             
             }
         }
     }
