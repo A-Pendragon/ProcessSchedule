@@ -19,11 +19,17 @@ public class NumericHandlers {
      * @return the string with only numbers and point
      */
     public static String removeAllNonNumeric(String str) {
-        return str.trim().replaceAll("[^\\d.]", "0");
+        if(str.equals("")) {
+            return "0";
+        }
+        return str.trim().replaceAll("[^\\d.]", "");
     }
     
-    public static String replaceStringWith(String str, String target, String replacement) {        
-        return str.trim().replace(target, replacement);
+    public static String replaceZeroAndEmptyWith(String str, String target) {        
+        if(str.equals("0") || str.equals("")) {
+            return target;
+        }
+        return str;
     }
 
     /**

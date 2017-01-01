@@ -227,13 +227,13 @@ public class TableHandlers {
             case "Shortest Remaining Time First":
             case "Round Robin":
                 for (int i = 0; i < table.getRowCount(); i++) {
-                    plist.add(new Process(TableHandlers.tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2)));
+                    plist.add(new Process(tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2)));
                 }
                 break;
             case "Non-Preemptive Priority":
             case "Preemptive Priority":
                 for (int i = 0; i < table.getRowCount(); i++) {
-                    plist.add(new Process(TableHandlers.tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2), TableHandlers.tableValueToInteger(table, i, 3)));
+                    plist.add(new Process(tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2), TableHandlers.tableValueToInteger(table, i, 3)));
                 }
                 break;            
             default:
