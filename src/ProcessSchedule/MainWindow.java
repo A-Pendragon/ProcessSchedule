@@ -31,6 +31,7 @@ public class MainWindow extends javax.swing.JFrame {
         initJFrame();
         initGlobalVariables();
         initListeners();
+        
     }
     
     //<editor-fold defaultstate="collapsed" desc="Global Variables Initializations">
@@ -566,7 +567,14 @@ public class MainWindow extends javax.swing.JFrame {
         config_label = new javax.swing.JLabel();
         priority_comboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
+        table = new javax.swing.JTable(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return !(column == this.getColumnCount()-1 ||
+                    column == this.getColumnCount()-2 ||
+                    column == this.getColumnCount()-3);
+            };
+        };
         jScrollPane2 = new javax.swing.JScrollPane();
         ganttChart = new javax.swing.JTable();
         computeButton = new javax.swing.JButton();

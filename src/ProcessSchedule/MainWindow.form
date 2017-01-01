@@ -367,6 +367,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    @Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;        return !(column == this.getColumnCount()-1 ||&#xa;            column == this.getColumnCount()-2 ||&#xa;            column == this.getColumnCount()-3);&#xa;    };&#xa;}"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
