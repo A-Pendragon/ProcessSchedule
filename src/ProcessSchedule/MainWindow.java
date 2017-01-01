@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
-import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MainWindow extends javax.swing.JFrame {
     public String selectedProcessType;
-    public JTable previousTable;
     
     public MainWindow() {
         initComponents();
@@ -37,7 +35,6 @@ public class MainWindow extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc="Global Variables Initializations">
     private void initGlobalVariables() {
         selectedProcessType = (String)type_comboBox.getSelectedItem();
-        previousTable = table;
     }
     //</editor-fold>
     
@@ -497,7 +494,7 @@ public class MainWindow extends javax.swing.JFrame {
         selectedProcessType = (String)type_comboBox.getSelectedItem();
         int row_count = Integer.valueOf((String)count_comboBox.getSelectedItem());
         
-        TableHandlers.setTable(selectedProcessType, row_count, table);
+        TableHandlers.setTable(selectedProcessType, row_count, table);         
         TableHandlers.setLabels(selectedProcessType, type_label_text, count_label_text, mode_label_text, criterion_label_text, type_comboBox, count_comboBox);
                 
         // Sets the priority label and combo box to enabled or disabled depending on the selected type of process.
@@ -529,7 +526,7 @@ public class MainWindow extends javax.swing.JFrame {
         // Sets index of the combo boxes to a random number between 0 to max index.
         type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));
         count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount()));                 
-        
+                        
         configurationsHandler();
         
         // Randomize the 3 Columns
@@ -552,7 +549,7 @@ public class MainWindow extends javax.swing.JFrame {
         return Double.parseDouble(time_quantum_textBox.getText());
     }
     //</editor-fold>
-      
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1115,7 +1112,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_Menu_File_ExitActionPerformed
     
     private void config_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_config_buttonActionPerformed
-        configurationsHandler();     
+        configurationsHandler();
     }//GEN-LAST:event_config_buttonActionPerformed
                 
     private void ao_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ao_buttonActionPerformed
@@ -1127,7 +1124,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_resetActionPerformed
             
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
-        randomizeAllInputs();
+        randomizeAllInputs();   
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     private void toolbar_clear_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_clear_tableActionPerformed
@@ -1169,10 +1166,9 @@ public class MainWindow extends javax.swing.JFrame {
             TableHandlers.shuffleTableColumnInt(table, 3); // 3 which is the column of Priority.
         }
     }//GEN-LAST:event_toolbar_shuffle_PActionPerformed
-
+        
     private void toolbar_table_copyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_copyActionPerformed
-        TableSystemClipboard.copyTable(table);
-        previousTable = table;
+        TableSystemClipboard.copyTable(table);        
     }//GEN-LAST:event_toolbar_table_copyActionPerformed
 
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
