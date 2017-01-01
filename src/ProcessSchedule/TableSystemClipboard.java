@@ -27,9 +27,11 @@ public class TableSystemClipboard {
         int numOfColumns = table.getColumnCount();
         StringBuilder stringBuilder = new StringBuilder();          
         
+        int inputColumns = (table.getColumnCount() == 6)? 3: 4;
+        
         // Get the values in the table and append it into the string builder.
         for(int i = 0; i < numOfRows; i++) {
-            for(int j = 0; j < numOfColumns; j++) {
+            for(int j = 0; j < inputColumns; j++) {
                 stringBuilder.append(table.getValueAt(i, j));
                 if(j < numOfColumns - 1) {
                     stringBuilder.append("\t");
@@ -51,12 +53,13 @@ public class TableSystemClipboard {
             StringTokenizer stringTokenizer = new StringTokenizer(string, "\n"); // Used as a condition in the for loop, to know if there are still more columns.
             
             String rowString, value;
+            int inputColumns = (table.getColumnCount() == 6)? 3: 4;
             
             for(int i = 0; i < table.getRowCount() && stringTokenizer.hasMoreTokens(); i++) {                
                 rowString = stringTokenizer.nextToken();                
                 StringTokenizer stringTokenizer2 = new StringTokenizer(rowString, "\t"); // Used as a condition in the for loop, to know if there are more element in the row.
                 
-                for(int j = 0; j < table.getColumnCount() && stringTokenizer2.hasMoreTokens(); j++) {             
+                for(int j = 0; j < inputColumns && stringTokenizer2.hasMoreTokens(); j++) {             
                     value = (String)stringTokenizer2.nextToken(); // Store the next token (which are the values in the cell) in the string value.                                        
                     table.setValueAt(value, i, j);
                 }

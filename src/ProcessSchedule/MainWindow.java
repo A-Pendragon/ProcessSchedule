@@ -317,7 +317,7 @@ public class MainWindow extends javax.swing.JFrame {
         bgTheme.add(theme_Luna);
         bgTheme.add(theme_Texture);
                         
-        theme_Mint.setSelected(true); // Set default theme (Aero) to selected                     
+        theme_Aero.setSelected(true); // Set default theme (Aero) to selected (See main).                    
     }
     //</editor-fold>
     
@@ -338,6 +338,11 @@ public class MainWindow extends javax.swing.JFrame {
         bt_comboBox.setSelectedIndex(0);
         priority_comboBox.setSelectedIndex(0);                
         
+        // Initialize the Advance Options label 
+        at_label.setEnabled(false);
+        bt_label.setEnabled(false);
+        priority_label.setEnabled(false);
+        
         // at and bt labels are initialized to disabled since the default element in their combo box is none.
         at_first_label.setEnabled(false);        
         at_second_label.setEnabled(false);                
@@ -352,26 +357,26 @@ public class MainWindow extends javax.swing.JFrame {
         at_first_textField.setEnabled(false);
         at_second_textField.setEnabled(false);
         bt_first_textField.setEnabled(false);
-        bt_second_textField.setEnabled(false);
-        
-        // Initialize the priority label 
-        at_label.setEnabled(false);
-        bt_label.setEnabled(false);
-        priority_label.setEnabled(false);
+        bt_second_textField.setEnabled(false);                
         
         // Set the at, bt, and priority to disabled as default
         at_comboBox.setEnabled(false);
         bt_comboBox.setEnabled(false);
         priority_comboBox.setEnabled(false);
         
-        // Set the time quantum label and textbox to disabled.
+        // Set the time quantum label to diabled and textbox to null and disabled as default.        
+        time_quantum_textBox.setText(null);
         time_quantum_label.setEnabled(false);
-        time_quantum_textBox.setEnabled(false);
+        time_quantum_textBox.setEnabled(false);                
+        
+        // Set the default of 
+        average_wt.setText(null);
+        average_tat.setText(null);
         
         table.setModel(new DefaultTableModel(0, 0)); // Sets a null table as a default
     }
     //</editor-fold>
-       
+    
     //<editor-fold defaultstate="collapsed" desc="Advance Options Handler">
     private void advanceOptionsHandler() {
         int at_index = at_comboBox.getSelectedIndex();
@@ -566,7 +571,7 @@ public class MainWindow extends javax.swing.JFrame {
         ganttChart = new javax.swing.JTable();
         computeButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        average_wt = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         ao_button = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
@@ -609,6 +614,8 @@ public class MainWindow extends javax.swing.JFrame {
         time_quantum_textBox = new javax.swing.JTextField();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
+        jLabel11 = new javax.swing.JLabel();
+        average_tat = new javax.swing.JLabel();
         Menu = new javax.swing.JMenuBar();
         Menu_File = new javax.swing.JMenu();
         Menu_File_Exit = new javax.swing.JMenuItem();
@@ -677,6 +684,7 @@ public class MainWindow extends javax.swing.JFrame {
                 "Process No.", "AT", "BT", "Priority", "CT", "TAT", "WT"
             }
         ));
+        table.setColumnSelectionAllowed(true);
         jScrollPane1.setViewportView(table);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 600, 170));
@@ -709,12 +717,12 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Average WT =");
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 440, -1, -1));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 460, -1, -1));
 
-        jLabel10.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("Average TAT =");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 440, -1, -1));
+        average_wt.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        average_wt.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        average_wt.setText("answer");
+        getContentPane().add(average_wt, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 460, -1, -1));
         getContentPane().add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 280, 10));
 
         ao_button.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
@@ -842,7 +850,7 @@ public class MainWindow extends javax.swing.JFrame {
         toolBar.add(toolbar_shuffle_P);
 
         toolbar_table_copy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Resources/table_copy_24.png"))); // NOI18N
-        toolbar_table_copy.setToolTipText("Copy Table Values");
+        toolbar_table_copy.setToolTipText("Copy Table Input Values");
         toolbar_table_copy.setFocusable(false);
         toolbar_table_copy.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         toolbar_table_copy.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -951,6 +959,16 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().add(time_quantum_textBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 70, 50, -1));
         getContentPane().add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 273, 280, 10));
         getContentPane().add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 83, 280, 10));
+
+        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel11.setText("Average TAT =");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 460, -1, -1));
+
+        average_tat.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        average_tat.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        average_tat.setText("answer");
+        getContentPane().add(average_tat, new org.netbeans.lib.awtextra.AbsoluteConstraints(485, 460, -1, -1));
 
         Menu_File.setText("File");
         Menu_File.setToolTipText("");
@@ -1161,15 +1179,15 @@ public class MainWindow extends javax.swing.JFrame {
             TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
         }
                         
-        /*
+        
         System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
                "\nComputed Process Value:" + pa.getProcessComputation() +
-               "\nScheduled Process Value:" + pa.getProcessSchedule());
-        
+               "\nScheduled Process Value:" + pa.getProcessSchedule());        
         System.out.println(pa.toString());
-        */
-        
+                
         TableHandlers.insertIntoTable(table, pa.toString());
+        average_wt.setText(String.valueOf(pa.getAverageWaitingTime()));
+        average_tat.setText(String.valueOf(pa.getAverageTurnAroundTime()));
     }//GEN-LAST:event_computeButtonActionPerformed
     //</editor-fold>
    
@@ -1183,7 +1201,7 @@ public class MainWindow extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         
-        // Default theme
+        // Default theme (See groupButton())
         try {
             UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
         } catch (Exception ex) {
@@ -1250,6 +1268,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel at_label;
     private javax.swing.JLabel at_second_label;
     private javax.swing.JTextField at_second_textField;
+    private javax.swing.JLabel average_tat;
+    private javax.swing.JLabel average_wt;
     private javax.swing.JComboBox<String> bt_comboBox;
     private javax.swing.JLabel bt_first_label;
     private javax.swing.JTextField bt_first_textField;
@@ -1267,7 +1287,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel criterion_label;
     private javax.swing.JLabel criterion_label_text;
     private javax.swing.JTable ganttChart;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
