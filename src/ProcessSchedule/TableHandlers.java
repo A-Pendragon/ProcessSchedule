@@ -235,14 +235,14 @@ public class TableHandlers {
                 for (int i = 0; i < table.getRowCount(); i++) {
                     plist.add(new Process(TableHandlers.tableValueToInteger(table, i, 0), TableHandlers.tableValueToDouble(table, i, 1), TableHandlers.tableValueToDouble(table, i, 2), TableHandlers.tableValueToInteger(table, i, 3)));
                 }
-                break;
+                break;            
             default:
                 break;
         }
         return plist;
     }
 
-    public static void doProcessOperation(String processType, ProcessOperation pa) {
+    public static void doProcessOperation(String processType, ProcessOperation pa, double timeQuantum) {
         switch (processType) {
             case "First Come First Serve":
                 pa.nonPreemptiveSchedule("firstcomefirstserve");
@@ -258,6 +258,9 @@ public class TableHandlers {
                 break;
             case "Preemptive Priority":
                 pa.preemptiveSchedule("ppriority");
+                break;
+            case "Round Robin":
+                pa.roundRobinSchedule(timeQuantum);
                 break;
             default:
                 break;

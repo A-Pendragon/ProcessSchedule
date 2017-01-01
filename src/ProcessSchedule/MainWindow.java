@@ -535,6 +535,17 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Time Quantum Handler">
+    private double timeQuantumHandler() {  
+        String timeQuantum_str = time_quantum_textBox.getText();        
+        if(timeQuantum_str.trim().isEmpty()) {
+            time_quantum_textBox.setText("1");
+            return 1;
+        } 
+        return Double.parseDouble(time_quantum_textBox.getText());
+    }
+    //</editor-fold>
       
     /**
      * This method is called from within the constructor to initialize the form.
@@ -935,6 +946,8 @@ public class MainWindow extends javax.swing.JFrame {
         time_quantum_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         time_quantum_label.setText("Time Quantum:");
         getContentPane().add(time_quantum_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 70, 90, -1));
+
+        time_quantum_textBox.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         getContentPane().add(time_quantum_textBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 70, 50, -1));
         getContentPane().add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 273, 280, 10));
         getContentPane().add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 83, 280, 10));
@@ -1139,10 +1152,10 @@ public class MainWindow extends javax.swing.JFrame {
         TableSystemClipboard.pasteTable(table);
         TableHandlers.replaceNullWithEmpty(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
-                
+                        
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-        ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.
-        TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
+        ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.        
+        TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.
                 
         System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
                "\nComputed Process Value:" + pa.getProcessComputation() +
@@ -1211,20 +1224,6 @@ public class MainWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new MainWindow().setVisible(true);
         });
-        
-        /*Example provided with the use of schedule function*/                
-        /*
-        LinkedList<Process> plist = new LinkedList<>();
-        plist.add(new Process(1, 0, 7.1, 2));
-        plist.add(new Process(2, 1, 5.1, 3));
-        plist.add(new Process(3, 0, 3.1, 5));
-        plist.add(new Process(4, 3, 1.1, 1));
-        ProcessOperation pa = new ProcessOperation(plist);
-        //pa.nonPreemptiveSchedule("nppriority");
-        pa.preemptiveSchedule("shortestremainingtime");
-        //pa.roundRobinSchedule(3);
-        System.out.println(pa.toString());                
-        */
     }
     //<editor-fold defaultstate="collapsed" desc="Netbeans Generated Variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
