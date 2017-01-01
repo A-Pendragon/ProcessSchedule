@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -1133,7 +1134,22 @@ public class MainWindow extends javax.swing.JFrame {
         TableSystemClipboard.pasteTable(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
                 
+    public static void replaceEmptyWithZero(JTable table) {
+        for(int i = 0; i < table.getColumnCount(); i++) {
+            for(int j = 0; j < table.getRowCount(); j++) {
+                if(table.getValueAt(j, i) == null) {
+                    table.setValueAt(0, j, i);
+                }
+            }
+        }
+    }
+    
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
+        ((AbstractTableModel)table.getModel()).fireTableDataChanged(); // Refresh the table in case of some changes
+        replaceEmptyWithZero(table);        
+        
+        System.out.println("asdfasdf       " + table.getValueAt(2, 2));
+        
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.
         TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
                 

@@ -215,7 +215,6 @@ public class TableHandlers {
         }
     }
 
-    //////////
     public static LinkedList<Process> addValuesToProcess(String processType, JTable table) {
         LinkedList<Process> plist = new LinkedList<>();
         switch (processType) {
