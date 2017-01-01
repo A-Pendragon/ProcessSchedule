@@ -1181,6 +1181,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
                         
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
+        TableHandlers.removeNonNumericInTable(table);
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.        
         if(selectedProcessType.equals("Round Robin")) {
             TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.

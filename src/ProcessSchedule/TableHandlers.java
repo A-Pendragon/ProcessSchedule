@@ -280,4 +280,21 @@ public class TableHandlers {
             }
         }
     }        
+    
+    public static void removeNonNumericInTable(JTable table) {
+        int columnLimit = table.getColumnCount() - 3;
+        for(int i = 1; i < columnLimit; i++) {
+            for(int j = 0; j < table.getRowCount(); j++) {                
+                String value_str = String.valueOf(table.getValueAt(j, i));
+                // If the type has priority and the column is equal to priority
+                if(table.getColumnCount() == 7 && i == 3) {                    
+                    int value = Integer.parseInt(NumericHandlers.removeAllNonNumeric(value_str));
+                    table.setValueAt(value, j, i);
+                } else {
+                    double value = Double.parseDouble(NumericHandlers.removeAllNonNumeric(value_str));
+                    table.setValueAt(value, j, i);
+                }             
+            }
+        }
+    }
 }
