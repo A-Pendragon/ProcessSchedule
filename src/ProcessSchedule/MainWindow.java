@@ -12,14 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.util.LinkedList;
 import javax.swing.ButtonGroup;
-import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 /**
  * Note: Functions are refactored to become static member of other classes 
@@ -31,6 +28,7 @@ public class MainWindow extends javax.swing.JFrame {
     public final int MAX_COLUMN = 8;
     public String selectedProcessType;
     public JTable previousTable;
+    public TableModel origTableModel;
     public DefaultTableModel ganttChartModel;   
     
     public MainWindow() {
@@ -1125,6 +1123,7 @@ public class MainWindow extends javax.swing.JFrame {
     
     private void config_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_config_buttonActionPerformed
         configurationsHandler();
+        origTableModel = table.getModel();
     }//GEN-LAST:event_config_buttonActionPerformed
                 
     private void ao_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ao_buttonActionPerformed
@@ -1136,7 +1135,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_resetActionPerformed
             
     private void toolbar_randomizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_randomizeActionPerformed
-        randomizeAllInputs();   
+        randomizeAllInputs();
+        origTableModel = table.getModel();
     }//GEN-LAST:event_toolbar_randomizeActionPerformed
 
     private void toolbar_clear_tableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_clear_tableActionPerformed
@@ -1180,7 +1180,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_shuffle_PActionPerformed
         
     private void toolbar_table_copyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_copyActionPerformed
-        TableSystemClipboard.copyTable(table);        
+        JTable origTableOrder = new JTable();
+        origTableOrder.setModel(origTableModel);
+        TableSystemClipboard.copyTable(origTableOrder);        
     }//GEN-LAST:event_toolbar_table_copyActionPerformed
 
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
