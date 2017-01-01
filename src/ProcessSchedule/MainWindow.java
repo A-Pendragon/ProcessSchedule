@@ -70,8 +70,8 @@ public class MainWindow extends javax.swing.JFrame {
         at_first_textField.setEnabled(bool);
         at_second_label.setEnabled(bool);
         at_second_textField.setEnabled(bool);
-        at_first_textField.setText(null);
-        at_second_textField.setText(null);
+        at_first_textField.setText("");
+        at_second_textField.setText("");
     }
     //</editor-fold>
     
@@ -81,8 +81,8 @@ public class MainWindow extends javax.swing.JFrame {
         bt_first_textField.setEnabled(bool);
         bt_second_label.setEnabled(bool);
         bt_second_textField.setEnabled(bool);
-        bt_first_textField.setText(null);
-        bt_second_textField.setText(null);
+        bt_first_textField.setText("");
+        bt_second_textField.setText("");
     }
     //</editor-fold>
         
@@ -324,11 +324,11 @@ public class MainWindow extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Sets Components to Default State">
     private void setComponentsToDefault() {
-        // Initialize dynamic labels to null
-        type_label_text.setText(null);
-        count_label_text.setText(null);
-        mode_label_text.setText(null);
-        criterion_label_text.setText(null);
+        // Initialize dynamic labels to ""
+        type_label_text.setText("");
+        count_label_text.setText("");
+        mode_label_text.setText("");
+        criterion_label_text.setText("");
         
         // Set the default selected index of type and count combo boxes to 0
         type_comboBox.setSelectedIndex(0);
@@ -351,10 +351,10 @@ public class MainWindow extends javax.swing.JFrame {
         bt_second_label.setEnabled(false);
                 
         // at and bt textfields are initialized to empty and disabled since the default element in their combo box is none.
-        at_first_textField.setText(null);
-        at_second_textField.setText(null);
-        bt_first_textField.setText(null);
-        bt_second_textField.setText(null);
+        at_first_textField.setText("");
+        at_second_textField.setText("");
+        bt_first_textField.setText("");
+        bt_second_textField.setText("");
         at_first_textField.setEnabled(false);
         at_second_textField.setEnabled(false);
         bt_first_textField.setEnabled(false);
@@ -365,14 +365,14 @@ public class MainWindow extends javax.swing.JFrame {
         bt_comboBox.setEnabled(false);
         priority_comboBox.setEnabled(false);
         
-        // Set the time quantum label to diabled and textbox to null and disabled as default.        
-        time_quantum_textBox.setText(null);
+        // Set the time quantum label to diabled and textbox to "" and disabled as default.        
+        time_quantum_textBox.setText("");
         time_quantum_label.setEnabled(false);
         time_quantum_textBox.setEnabled(false);                
         
         // Set the default of 
-        average_wt.setText(null);
-        average_tat.setText(null);
+        average_wt.setText("");
+        average_tat.setText("");
         
         table.setModel(new DefaultTableModel(0, 0)); // Sets a null table as a default
     }
@@ -405,26 +405,26 @@ public class MainWindow extends javax.swing.JFrame {
         double bt_first = 0;
         double bt_second = 0;
         
-        // Try if the input is valid for conversion to double, catch sets the text field to null then sets error to true to stop the method from continuing.   
+        // Try if the input is valid for conversion to double, catch sets the text field to "" then sets error to true to stop the method from continuing.   
         try { 
             at_first = Double.parseDouble(at_first_str); 
         } catch (NumberFormatException ex) { 
-            at_first_textField.setText(null); 
+            at_first_textField.setText(""); 
         }
         try { 
             at_second = Double.parseDouble(at_second_str); 
         } catch (NumberFormatException ex) { 
-            at_second_textField.setText(null); 
+            at_second_textField.setText(""); 
         } 
         try { 
             bt_first = Double.parseDouble(bt_first_str); 
         } catch (NumberFormatException ex) {
-            bt_first_textField.setText(null); 
+            bt_first_textField.setText(""); 
         }                       
         try {
             bt_second = Double.parseDouble(bt_second_str); 
         } catch (NumberFormatException ex) {
-            bt_second_textField.setText(null); 
+            bt_second_textField.setText(""); 
         }                                
         
         /**
@@ -1181,14 +1181,13 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
                         
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-        TableHandlers.removeNonNumericInTable(table);
+        TableHandlers.validateTable(table);
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.        
         if(selectedProcessType.equals("Round Robin")) {
             TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.
         } else {
             TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
         }
-                        
         
         System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
                "\nComputed Process Value:" + pa.getProcessComputation() +
