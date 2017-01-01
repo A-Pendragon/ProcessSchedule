@@ -22,7 +22,7 @@ import javax.swing.JTable;
  */
 public class TableSystemClipboard { 
                 
-    public static void copyTable(JTable table) {
+    public static void copyTable(JTable table) {        
         int numOfRows = table.getRowCount();
         int numOfColumns = table.getColumnCount();
         StringBuilder stringBuilder = new StringBuilder();          
@@ -45,7 +45,7 @@ public class TableSystemClipboard {
         systemClipboard.setContents(stringSelection, stringSelection); // Sets the contents of the system clipboard.
     }
     
-    public static void pasteTable(JTable table) {                
+    public static void pasteTable(JTable table) {                               
         try {
             Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             String string = (String)(systemClipboard.getContents(null).getTransferData(DataFlavor.stringFlavor)); // Get the contents in the system clipboard.
