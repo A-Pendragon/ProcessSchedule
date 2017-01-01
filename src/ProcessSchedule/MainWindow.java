@@ -57,34 +57,59 @@ public class MainWindow extends javax.swing.JFrame {
         groupButton(); // Groups the Theme radio buttons in the Menu bar (View > Theme). Since they are radio buttons
         
         TableHandlers.centerTableHorizontalAlignment(table);
+        TableHandlers.setGanttChart(ganttChart);
         
         setComponentsToDefault();
     }
     //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="Sets AT to enabled/disabled">
+    private void atSetEnabled(boolean bool) {
+        at_first_label.setEnabled(bool);
+        at_first_textField.setEnabled(bool);
+        at_second_label.setEnabled(bool);
+        at_second_textField.setEnabled(bool);
+        at_first_textField.setText(null);
+        at_second_textField.setText(null);
+    }
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Sets BT to enabled/disabled">
+    private void btSetEnabled(boolean bool) {
+        bt_first_label.setEnabled(bool);
+        bt_first_textField.setEnabled(bool);
+        bt_second_label.setEnabled(bool);
+        bt_second_textField.setEnabled(bool);
+        bt_first_textField.setText(null);
+        bt_second_textField.setText(null);
+    }
+    //</editor-fold>
+        
     //<editor-fold defaultstate="collapsed" desc="Listeners Initialization">    
     private void initListeners() {                
         // Add action listeners to the at combo box for the labels in the advanced options.
         // The label will change in accordance to the selected item.         
         at_comboBox.addActionListener((ActionEvent event) -> {
             int selectedIndex = at_comboBox.getSelectedIndex();  
-            
+                        
             if(selectedIndex == 0) {
-                at_first_label.setEnabled(false);
-                at_first_textField.setEnabled(false);
-                at_second_label.setEnabled(false);
-                at_second_textField.setEnabled(false);
-            } else {
-                at_first_label.setEnabled(true);
-                at_first_textField.setEnabled(true);
-                at_second_label.setEnabled(true);
-                at_second_textField.setEnabled(true);
-                at_first_textField.setText("0");
-                at_second_textField.setText("0");
-                bt_comboBox.setEnabled(true);
+                atSetEnabled(false);
+            } else if(selectedIndex == 1) {
+                atSetEnabled(true);
+                at_first_textField.setText("1");
+                at_second_textField.setText("1");
+            } else if(selectedIndex == 2) {
+                atSetEnabled(true);
+                at_first_textField.setText(String.valueOf(table.getRowCount()));
+                at_second_textField.setText("1");
+            } else if(selectedIndex == 3) {
+                atSetEnabled(true);
+                at_first_textField.setText("1");
+                at_second_textField.setText(String.valueOf(table.getRowCount()));
             }
                         
-            if(selectedIndex == 3) {
+            // Sets the label of at
+            if(selectedIndex == 3) {                
                 at_first_label.setText("Min");
                 at_second_label.setText("Max");                
             } else {
@@ -99,26 +124,25 @@ public class MainWindow extends javax.swing.JFrame {
             int selectedIndex = bt_comboBox.getSelectedIndex();
             
             if(selectedIndex == 0) {
-                bt_first_label.setEnabled(false);
-                bt_first_textField.setEnabled(false);
-                bt_second_label.setEnabled(false);
-                bt_second_textField.setEnabled(false);
-            } else {
-                bt_first_label.setEnabled(true);
-                bt_first_textField.setEnabled(true);
-                bt_second_label.setEnabled(true);
-                bt_second_textField.setEnabled(true);
+                btSetEnabled(false);
+            } else if(selectedIndex == 1) {
+                btSetEnabled(true);
                 bt_first_textField.setText("1");
-                bt_second_textField.setText("0");
-                ao_button.setEnabled(true);
+                bt_second_textField.setText("1");
+            } else if(selectedIndex == 2) {
+                btSetEnabled(true);
+                bt_first_textField.setText(String.valueOf(table.getRowCount()));
+                bt_second_textField.setText("1");
+            } else if(selectedIndex == 3) {
+                btSetEnabled(true);
+                bt_first_textField.setText("1");
+                bt_second_textField.setText(String.valueOf(table.getRowCount()));
             }
-            
-            
+                        
+            // Sets the label of bt
             if(selectedIndex == 3) {
                 bt_first_label.setText("Min");
                 bt_second_label.setText("Max");
-                bt_first_textField.setText("1");
-                bt_second_textField.setText("1");
             } else {
                 bt_first_label.setText("Start");
                 bt_second_label.setText("Step");
@@ -309,10 +333,10 @@ public class MainWindow extends javax.swing.JFrame {
         type_comboBox.setSelectedIndex(0);
         count_comboBox.setSelectedIndex(0);
         
-        // Set the default selected index of at and bt combo boxes to 0
+        // Set the default selected index of at, bt, and priority combo boxes to 0
         at_comboBox.setSelectedIndex(0);
         bt_comboBox.setSelectedIndex(0);
-        priority_comboBox.setSelectedIndex(0);
+        priority_comboBox.setSelectedIndex(0);                
         
         // at and bt labels are initialized to disabled since the default element in their combo box is none.
         at_first_label.setEnabled(false);        
@@ -330,8 +354,14 @@ public class MainWindow extends javax.swing.JFrame {
         bt_first_textField.setEnabled(false);
         bt_second_textField.setEnabled(false);
         
-        // Initialize the priority label and combo box to disabled, since priority is determined after the type is selected.
+        // Initialize the priority label 
+        at_label.setEnabled(false);
+        bt_label.setEnabled(false);
         priority_label.setEnabled(false);
+        
+        // Set the at, bt, and priority to disabled as default
+        at_comboBox.setEnabled(false);
+        bt_comboBox.setEnabled(false);
         priority_comboBox.setEnabled(false);
         
         // Set the time quantum label and textbox to disabled.
@@ -353,6 +383,9 @@ public class MainWindow extends javax.swing.JFrame {
         String at_second_str = NumericHandlers.removeAllNonNumeric(at_second_textField.getText());
         String bt_first_str = NumericHandlers.removeAllNonNumeric(bt_first_textField.getText());
         String bt_second_str = NumericHandlers.removeAllNonNumeric(bt_second_textField.getText());        
+        
+        // Remove all 0 (If user intentionally inputted a 0, although the default is 1) with 1 in the burst time inputs
+        bt_first_str = NumericHandlers.replaceStringWith(bt_first_textField.getText(), "0", "1");
         
         // Update the text fields
         at_first_textField.setText(at_first_str);
@@ -444,12 +477,17 @@ public class MainWindow extends javax.swing.JFrame {
                 break;
             default:
                 break;
-        }
+        }                
     }
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Configurations Handler">
     private void configurationsHandler() {
+        at_label.setEnabled(true);
+        bt_label.setEnabled(true);
+        at_comboBox.setEnabled(true);
+        bt_comboBox.setEnabled(true);
+        
         selectedProcessType = (String)type_comboBox.getSelectedItem();
         int row_count = Integer.valueOf((String)count_comboBox.getSelectedItem());
         
@@ -477,6 +515,11 @@ public class MainWindow extends javax.swing.JFrame {
     
     //<editor-fold defaultstate="collapsed" desc="Randomizes All Inputs">
     private void randomizeAllInputs() {
+        at_label.setEnabled(true);
+        bt_label.setEnabled(true);
+        at_comboBox.setEnabled(true);
+        bt_comboBox.setEnabled(true);
+        
         // Sets index of the combo boxes to a random number between 0 to max index.
         type_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, type_comboBox.getItemCount()));
         count_comboBox.setSelectedIndex(NumericHandlers.randomRange(0, count_comboBox.getItemCount()));                 
@@ -509,7 +552,7 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        ganttChart = new javax.swing.JTable();
         computeButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -519,7 +562,7 @@ public class MainWindow extends javax.swing.JFrame {
         config_button = new javax.swing.JButton();
         config_count_label = new javax.swing.JLabel();
         priority_label = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        at_label = new javax.swing.JLabel();
         count_comboBox = new javax.swing.JComboBox<>();
         at_comboBox = new javax.swing.JComboBox<>();
         bt_comboBox = new javax.swing.JComboBox<>();
@@ -547,7 +590,7 @@ public class MainWindow extends javax.swing.JFrame {
         at_first_textField = new javax.swing.JTextField();
         bt_first_textField = new javax.swing.JTextField();
         at_second_label = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        bt_label = new javax.swing.JLabel();
         bt_first_label = new javax.swing.JLabel();
         bt_second_label = new javax.swing.JLabel();
         mode_label_text = new javax.swing.JLabel();
@@ -629,8 +672,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        ganttChart.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        ganttChart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null}
             },
@@ -638,8 +681,8 @@ public class MainWindow extends javax.swing.JFrame {
                 "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"
             }
         ));
-        jTable2.setRowHeight(20);
-        jScrollPane2.setViewportView(jTable2);
+        ganttChart.setRowHeight(20);
+        jScrollPane2.setViewportView(ganttChart);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 600, 40));
 
@@ -665,7 +708,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         ao_button.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         ao_button.setText("Apply");
-        ao_button.setEnabled(false);
         ao_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ao_buttonActionPerformed(evt);
@@ -693,10 +735,10 @@ public class MainWindow extends javax.swing.JFrame {
         priority_label.setText("Priority:");
         getContentPane().add(priority_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 40, 30));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("AT:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 40, 30));
+        at_label.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        at_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        at_label.setText("AT:");
+        getContentPane().add(at_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 40, 30));
 
         count_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         count_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6", "7", "8", "9", "10" }));
@@ -872,10 +914,10 @@ public class MainWindow extends javax.swing.JFrame {
         at_second_label.setText("Step");
         getContentPane().add(at_second_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, -1, 20));
 
-        jLabel11.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("BT:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 40, 30));
+        bt_label.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        bt_label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        bt_label.setText("BT:");
+        getContentPane().add(bt_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 40, 30));
 
         bt_first_label.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         bt_first_label.setText("Start");
@@ -1199,11 +1241,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> at_comboBox;
     private javax.swing.JLabel at_first_label;
     private javax.swing.JTextField at_first_textField;
+    private javax.swing.JLabel at_label;
     private javax.swing.JLabel at_second_label;
     private javax.swing.JTextField at_second_textField;
     private javax.swing.JComboBox<String> bt_comboBox;
     private javax.swing.JLabel bt_first_label;
     private javax.swing.JTextField bt_first_textField;
+    private javax.swing.JLabel bt_label;
     private javax.swing.JLabel bt_second_label;
     private javax.swing.JTextField bt_second_textField;
     private javax.swing.JButton computeButton;
@@ -1216,9 +1260,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel count_label_text;
     private javax.swing.JLabel criterion_label;
     private javax.swing.JLabel criterion_label_text;
+    private javax.swing.JTable ganttChart;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
@@ -1234,7 +1277,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel mode_label;
     private javax.swing.JLabel mode_label_text;
     private javax.swing.JComboBox<String> priority_comboBox;

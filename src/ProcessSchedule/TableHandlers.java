@@ -25,9 +25,9 @@ import javax.swing.table.TableColumnModel;
 public class TableHandlers {        
     /**
      * Sets the table in accordance to the type of process schedule algorithm selected and count
-     * @param index the index of the process schedule algorithm type in the combo box
+     * @param type the process type
      * @param row_count the number of rows of the table
-     * @param table
+     * @param table the table to be set.
      */
     public static void setTable(String type, int row_count, JTable table) {
         String[] columnNames = new String[]{"Process No.", "AT", "BT", "CT", "TAT", "WT"};
@@ -86,6 +86,10 @@ public class TableHandlers {
         table.getTableHeader().setReorderingAllowed(false); // Disable table column dragging.
         centerTableHorizontalAlignment(table);
         setProcessNumber(table);
+    }
+    
+    public static void setGanttChart(JTable table) {
+        table.getTableHeader().setReorderingAllowed(false); // Disable table column dragging.
     }
 
     // Sets the labels above the table in accordance to the type of process schedule algorithm selected and count

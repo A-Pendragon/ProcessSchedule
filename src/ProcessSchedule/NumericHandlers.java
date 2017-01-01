@@ -19,7 +19,11 @@ public class NumericHandlers {
      * @return the string with only numbers and point
      */
     public static String removeAllNonNumeric(String str) {
-        return str.trim().replaceAll("[^\\d.]", "");
+        return str.trim().replaceAll("[^\\d.]", "0");
+    }
+    
+    public static String replaceStringWith(String str, String target, String replacement) {        
+        return str.trim().replace(target, replacement);
     }
 
     /**
@@ -47,5 +51,5 @@ public class NumericHandlers {
             return min;
         }
         return ThreadLocalRandom.current().nextDouble(min, max);
-    }
+    }    
 }
