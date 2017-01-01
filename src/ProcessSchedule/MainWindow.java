@@ -10,11 +10,16 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.util.LinkedList;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  * Note: Functions are refactored to become static member of other classes 
@@ -23,15 +28,19 @@ import javax.swing.table.DefaultTableModel;
  * @author Pendoragon
  */
 public class MainWindow extends javax.swing.JFrame {
+    public final int MAX_COLUMN = 8;
     public String selectedProcessType;
     public JTable previousTable;
+    public DefaultTableModel ganttChartModel;   
     
     public MainWindow() {
         initComponents();
         initJFrame();
         initGlobalVariables();
         initListeners();
-        
+        this.ganttChartModel = new DefaultTableModel();
+        this.ganttChart.setModel(ganttChartModel);
+       
     }
     
     //<editor-fold defaultstate="collapsed" desc="Global Variables Initializations">
@@ -703,16 +712,17 @@ public class MainWindow extends javax.swing.JFrame {
         ganttChart.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         ganttChart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"
+
             }
         ));
+        ganttChart.setEnabled(false);
         ganttChart.setRowHeight(20);
         jScrollPane2.setViewportView(ganttChart);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 600, 40));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 600, 60));
 
         computeButton.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         computeButton.setText("Compute");
@@ -1193,7 +1203,16 @@ public class MainWindow extends javax.swing.JFrame {
                "\nComputed Process Value:" + pa.getProcessComputation() +
                "\nScheduled Process Value:" + pa.getProcessSchedule());        
         System.out.println(pa.toString());
-                
+        
+        this.ganttChartModel.setColumnCount(0);
+        LinkedList<Process> processSchedule = pa.getProcessSchedule();
+        if(processSchedule.size() > this.MAX_COLUMN){
+            this.ganttChart.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        }
+        for(int i = 0; i < processSchedule.size(); i++){
+            this.ganttChartModel.addColumn("P" + processSchedule.get(i).getProcessNo(), new String[]{Double.toString(processSchedule.get(i).getBurstTime())} );
+            
+        } TableHandlers.centerTableHorizontalAlignment(this.ganttChart);
         TableHandlers.insertIntoTable(table, pa.toString());
         average_wt.setText(String.valueOf(pa.getAverageWaitingTime()));
         average_tat.setText(String.valueOf(pa.getAverageTurnAroundTime()));
