@@ -1051,15 +1051,15 @@ public class MainWindow extends javax.swing.JFrame {
         this.enableAllInputs(false);
         this.computeButton.setEnabled(false);
         //override
+        this.at_comboBox.setSelectedIndex(0);
         this.bt_comboBox.setSelectedIndex(0);
         this.bt_first_textField.setEnabled(false);
-        this.bt_second_textField.setEnabled(false);
-        this.toolbar_reset.setEnabled(true);
+        this.bt_second_textField.setEnabled(false);        
         this.at_comboBox.setEnabled(true);
+        this.bt_comboBox.setEnabled(true);
+        this.toolbar_reset.setEnabled(true);
         this.toolbar_table_copy.setEnabled(true);
-        this.toolbar_table_paste.setEnabled(true);
-        this.at_comboBox.setSelectedIndex(0);
-        
+        this.toolbar_table_paste.setEnabled(true);                
     }//GEN-LAST:event_config_buttonActionPerformed
                 
     private void ao_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ao_buttonActionPerformed
@@ -1133,23 +1133,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void toolbar_table_pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toolbar_table_pasteActionPerformed
         TableSystemClipboard.pasteTable(table);
     }//GEN-LAST:event_toolbar_table_pasteActionPerformed
-                
-    public static void replaceEmptyWithZero(JTable table) {
-        for(int i = 0; i < table.getColumnCount(); i++) {
-            for(int j = 0; j < table.getRowCount(); j++) {
-                if(table.getValueAt(j, i) == null) {
-                    table.setValueAt(0, j, i);
-                }
-            }
-        }
-    }
-    
+                    
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
-        ((AbstractTableModel)table.getModel()).fireTableDataChanged(); // Refresh the table in case of some changes
-        replaceEmptyWithZero(table);        
-        
-        System.out.println("asdfasdf       " + table.getValueAt(2, 2));
-        
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.
         TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
                 
