@@ -242,7 +242,7 @@ public class TableHandlers {
         return plist;
     }
 
-    public static void doProcessOperation(String processType, ProcessOperation pa, double timeQuantum) {
+    public static void doProcessOperation(String processType, ProcessOperation pa) {
         switch (processType) {
             case "First Come First Serve":
                 pa.nonPreemptiveSchedule("firstcomefirstserve");
@@ -259,12 +259,14 @@ public class TableHandlers {
             case "Preemptive Priority":
                 pa.preemptiveSchedule("ppriority");
                 break;
-            case "Round Robin":
-                pa.roundRobinSchedule(timeQuantum);
-                break;
             default:
                 break;
         }
+    }
+    
+    //Overload
+    public static void doProcessOperation(String processType, ProcessOperation pa, double timeQuantum) {
+        pa.roundRobinSchedule(timeQuantum);
     }
     
     public static void replaceNullWithEmpty(JTable table) {

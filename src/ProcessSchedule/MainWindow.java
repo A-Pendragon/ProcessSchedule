@@ -1155,13 +1155,20 @@ public class MainWindow extends javax.swing.JFrame {
                         
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.        
-        TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.
-                
+        if(selectedProcessType.equals("Round Robin")) {
+            TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.
+        } else {
+            TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
+        }
+                        
+        /*
         System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
                "\nComputed Process Value:" + pa.getProcessComputation() +
                "\nScheduled Process Value:" + pa.getProcessSchedule());
         
         System.out.println(pa.toString());
+        */
+        
         TableHandlers.insertIntoTable(table, pa.toString());
     }//GEN-LAST:event_computeButtonActionPerformed
     //</editor-fold>
