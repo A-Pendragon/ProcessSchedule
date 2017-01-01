@@ -168,11 +168,21 @@ public class ProcessOperation {
                 continue;
             }
             Collections.sort(this.requestQueue, processComparator);
-            Process currentProcess = new Process(this.requestQueue.getFirst());
-            currentProcess.setBurstTime(this.unitIntervalPrecision);
-            this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-this.unitIntervalPrecision);
-            this.totalProcessTime += currentProcess.getBurstTime();      
-            this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
+            Process currentProcess;
+            if(this.requestQueue.getFirst().equals(this.processSchedule.getLast())){
+                currentProcess = this.processSchedule.getLast();
+                currentProcess.setBurstTime(currentProcess.getBurstTime() + this.unitIntervalPrecision);
+                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-this.unitIntervalPrecision);
+                this.totalProcessTime += this.unitIntervalPrecision;     
+                currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime(); 
+            }else{
+                currentProcess = new Process(this.requestQueue.getFirst());
+                currentProcess.setBurstTime(this.unitIntervalPrecision);
+                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-this.unitIntervalPrecision);
+                this.totalProcessTime += currentProcess.getBurstTime();      
+                this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
+            }
+            
             if(this.requestQueue.getFirst().getBurstTime() == 0){
                 this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1)
                     .setCompletionTime(this.totalProcessTime)
