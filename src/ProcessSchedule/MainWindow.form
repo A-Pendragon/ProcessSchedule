@@ -582,7 +582,6 @@
             <StringItem index="3" value="Randomize"/>
           </StringArray>
         </Property>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -606,7 +605,6 @@
             <StringItem index="3" value="Randomize"/>
           </StringArray>
         </Property>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -646,7 +644,6 @@
               <Image iconType="3" name="/Resources/reset_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Reset All"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -675,7 +672,6 @@
               <Image iconType="3" name="/Resources/empty_table_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Clear Table"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -690,7 +686,6 @@
               <Image iconType="3" name="/Resources/shuffle_AT_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Shuffle Arrival Time (AT)"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -705,7 +700,6 @@
               <Image iconType="3" name="/Resources/shuffle_BT_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Shuffle Burst Time (BT)"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -720,7 +714,6 @@
               <Image iconType="3" name="/Resources/shuffle_P_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Shuffle Priority"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -735,7 +728,6 @@
               <Image iconType="3" name="/Resources/table_copy_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Copy Table Values"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
@@ -750,7 +742,6 @@
               <Image iconType="3" name="/Resources/table_paste_24.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Paste Into Table"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
