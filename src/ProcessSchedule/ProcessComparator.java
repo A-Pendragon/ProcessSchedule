@@ -35,14 +35,14 @@ public class ProcessComparator implements Comparator<Process> {
         }else if(mode.equalsIgnoreCase("shortestjobfirst")){
             int compareBurstTime = Double.valueOf(p.getBurstTime()).compareTo(p1.getBurstTime());
             if(compareBurstTime == 0){
-                returnType = Integer.valueOf(p.getProcessNo()).compareTo(p1.getProcessNo());
+                returnType = Double.valueOf(p.getArrivalTime()).compareTo(p1.getArrivalTime());
             }else{
                 returnType = compareBurstTime;  
             }
         }else if(mode.equalsIgnoreCase("nppriority")){
             int comparePriority = Integer.valueOf(p1.getPriority()).compareTo(p.getPriority());
             if(comparePriority == 0){
-                returnType = Integer.valueOf(p.getProcessNo()).compareTo(p1.getProcessNo());
+                returnType = Double.valueOf(p.getArrivalTime()).compareTo(p1.getArrivalTime());
             }else{
                 returnType = comparePriority;  
             }

@@ -13,10 +13,13 @@ import java.awt.event.ItemEvent;
 import java.util.LinkedList;
 import javax.swing.ButtonGroup;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * Note: Functions are refactored to become static member of other classes 
@@ -554,8 +557,7 @@ public class MainWindow extends javax.swing.JFrame {
         if(timeQuantum_str.trim().isEmpty()) {
             time_quantum_textBox.setText("1");
             return 1;
-        } 
-        return Double.parseDouble(time_quantum_textBox.getText());
+        }return Double.parseDouble(time_quantum_textBox.getText());
     }
     //</editor-fold>
     
@@ -1192,27 +1194,37 @@ public class MainWindow extends javax.swing.JFrame {
                         
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
         TableHandlers.validateTable(table);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(this.table.getModel());
+        LinkedList<RowSorter.SortKey> sortKeys = new LinkedList<>();
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
+        this.table.setRowSorter(sorter);
+        
         ProcessOperation pa = new ProcessOperation(TableHandlers.addValuesToProcess(selectedProcessType, table)); // Add process from table.        
         if(selectedProcessType.equals("Round Robin")) {
             TableHandlers.doProcessOperation(selectedProcessType, pa, timeQuantumHandler()); // Do the Process operation.
-        } else {
+        }else{
             TableHandlers.doProcessOperation(selectedProcessType, pa); // Do the Process operation.
         }
         
+        /*
         System.out.println("\nInitial Process Value:" +  pa.getProcessInitStorage() +
                "\nComputed Process Value:" + pa.getProcessComputation() +
                "\nScheduled Process Value:" + pa.getProcessSchedule());        
         System.out.println(pa.toString());
+        */
         
         this.ganttChartModel.setColumnCount(0);
         LinkedList<Process> processSchedule = pa.getProcessSchedule();
         if(processSchedule.size() > this.MAX_COLUMN){
             this.ganttChart.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        }else{
+            this.ganttChart.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         }
         for(int i = 0; i < processSchedule.size(); i++){
             this.ganttChartModel.addColumn("P" + processSchedule.get(i).getProcessNo(), new String[]{Double.toString(processSchedule.get(i).getBurstTime())} );
             
-        } TableHandlers.centerTableHorizontalAlignment(this.ganttChart);
+        }TableHandlers.centerTableHorizontalAlignment(this.ganttChart);
         TableHandlers.insertIntoTable(table, pa.toString());
         average_wt.setText(String.valueOf(pa.getAverageWaitingTime()));
         average_tat.setText(String.valueOf(pa.getAverageTurnAroundTime()));
