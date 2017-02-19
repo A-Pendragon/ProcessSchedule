@@ -10,7 +10,6 @@ package ProcessSchedule;
  * @author Chris
  */
 public class Process {
-    // DUMI
     private int processNo;
     private double arrivalTime;
     private double burstTime;
