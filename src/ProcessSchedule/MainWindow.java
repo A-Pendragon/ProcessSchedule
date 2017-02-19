@@ -41,7 +41,6 @@ public class MainWindow extends javax.swing.JFrame {
         initListeners();
         this.ganttChartModel = new DefaultTableModel();
         this.ganttChart.setModel(ganttChartModel);
-       
     }
     
     //<editor-fold defaultstate="collapsed" desc="Global Variables Initializations">

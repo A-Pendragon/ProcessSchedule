@@ -198,23 +198,34 @@ public class ProcessOperation {
     
     private double initRoundRobin(){
         double timeDivider = this.timeQuantum;
+        /*
         this.arrivalQueue.forEach((process) -> { this.requestQueue.add(process); });
         this.arrivalQueue.removeAll(this.arrivalQueue);
+        */
+        LinkedList<Process> tempQueue = new LinkedList<>(); 
+        this.requestQueue.add(this.arrivalQueue.removeFirst());
         Process firstProcess = new Process(this.requestQueue.getFirst());
+        Process relocateProcess = null;
+        
         if(firstProcess.getBurstTime() <= timeDivider){
-            this.totalProcessTime += firstProcess.getBurstTime();
             timeDivider -= firstProcess.getBurstTime();
+            this.totalProcessTime += firstProcess.getBurstTime();
             this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1).setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime();  
             if(timeDivider == 0){ timeDivider = this.timeQuantum; }
         }else{
             firstProcess.setBurstTime(timeDivider);
             this.totalProcessTime += firstProcess.getBurstTime();
             this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime() - timeDivider);
-            Process relocateProcess = this.requestQueue.removeFirst();
-            this.requestQueue.add(relocateProcess);
+            relocateProcess = this.requestQueue.removeFirst();
             timeDivider = this.timeQuantum;
-            
         }
+        for(int i = 0; i < this.arrivalQueue.size(); i++){
+            if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
+                this.requestQueue.add(this.arrivalQueue.get(i));
+                tempQueue.add(this.arrivalQueue.get(i));
+            }
+        }this.arrivalQueue.removeAll(tempQueue); 
+        if(relocateProcess != null){ this.requestQueue.add(relocateProcess); }
         this.processSchedule.add(firstProcess);
         return timeDivider;
     }
@@ -225,11 +236,11 @@ public class ProcessOperation {
         this.initRequestQueue();
         this.setPrecision();
         double timeDivider = this.initRoundRobin();
-        while(!this.requestQueue.isEmpty()){
-            if(!this.arrivalQueue.isEmpty()){
-                this.totalProcessTime = this.arrivalQueue.getFirst().getArrivalTime();
-            }
+        while(!(this.requestQueue.isEmpty() && this.arrivalQueue.isEmpty())){
+            LinkedList<Process> tempQueue = new LinkedList<>(); 
             Process currentProcess = new Process(this.requestQueue.getFirst());
+            Process relocateProcess = null;
+            
             if(currentProcess.getBurstTime() <= timeDivider){
                 timeDivider -= currentProcess.getBurstTime();
                 this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1)
@@ -239,12 +250,19 @@ public class ProcessOperation {
                 if(timeDivider == 0){ timeDivider = this.timeQuantum; }
             }else{
                 currentProcess.setBurstTime(timeDivider);
-                this.totalProcessTime += timeDivider;
+                this.totalProcessTime += currentProcess.getBurstTime();
                 this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime() - timeDivider);
-                Process relocateProcess = this.requestQueue.removeFirst();
-                this.requestQueue.add(relocateProcess);
+                relocateProcess = this.requestQueue.removeFirst();
                 timeDivider = this.timeQuantum;
-            }this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
+            }
+            for(int i = 0; i < this.arrivalQueue.size(); i++){
+            if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
+                this.requestQueue.add(this.arrivalQueue.get(i));
+                tempQueue.add(this.arrivalQueue.get(i));
+            }
+            }this.arrivalQueue.removeAll(tempQueue); 
+            if(relocateProcess != null){ this.requestQueue.add(relocateProcess); }
+            this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
             
         }this.setAverageTime();
     }
