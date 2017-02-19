@@ -163,7 +163,6 @@ public class TableHandlers {
         
         for(int i = 0; i < table.getRowCount(); i++) {
            list.add((Double) table.getValueAt(i, column));
-           
         }        
         
         Collections.shuffle(list);  // Shuffle the list

@@ -327,7 +327,7 @@ public class MainWindow extends javax.swing.JFrame {
         bgTheme.add(theme_Luna);
         bgTheme.add(theme_Texture);
                         
-        theme_Aero.setSelected(true); // Set default theme (Aero) to selected (See main).                    
+        theme_Texture.setSelected(true); // Set default theme (Aero) to selected (See main).                    
     }
     //</editor-fold>
     
@@ -778,7 +778,7 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().add(at_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 40, 30));
 
         count_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        count_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6", "7", "8", "9", "10" }));
+        count_comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3", "4", "5", "6", "7", "8", "9" }));
         getContentPane().add(count_comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 200, 32));
 
         at_comboBox.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
@@ -1003,6 +1003,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         Menu_Edit.setText("Edit");
 
+        Menu_Edit_Reset.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         Menu_Edit_Reset.setText("Reset");
         Menu_Edit_Reset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1194,6 +1195,7 @@ public class MainWindow extends javax.swing.JFrame {
                         
     private void computeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeButtonActionPerformed
         TableHandlers.validateTable(table);
+                
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(this.table.getModel());
         LinkedList<RowSorter.SortKey> sortKeys = new LinkedList<>();
         sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
@@ -1243,7 +1245,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         // Default theme (See groupButton())
         try {
-            UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
+            UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

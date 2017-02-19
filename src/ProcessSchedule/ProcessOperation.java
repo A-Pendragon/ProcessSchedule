@@ -108,7 +108,9 @@ public class ProcessOperation {
                     this.requestQueue.add(this.arrivalQueue.get(i));
                     tempQueue.add(this.arrivalQueue.get(i));                    
                 }
-            }this.arrivalQueue.removeAll(tempQueue); 
+            }
+            
+            this.arrivalQueue.removeAll(tempQueue); 
             if(this.requestQueue.isEmpty()){
                 this.requestQueue.add(this.arrivalQueue.removeFirst());
                 this.totalProcessTime = this.requestQueue.getLast().getArrivalTime();
