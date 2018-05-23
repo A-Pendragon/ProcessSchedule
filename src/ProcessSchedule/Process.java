@@ -1,15 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ProcessSchedule;
 
-/**
- *
- * @author Chris
- */
 public class Process {
+    
     private int processNo;
     private double arrivalTime;
     private double burstTime;
@@ -45,45 +37,39 @@ public class Process {
         this.waitingTime = p.waitingTime;
     }
     
-    
-    private double round(double number){
+    private double round(double number) {
         int numberOfPrecision = 1;
-        for(int i = 0; i < Process.precision; i++){
+        
+        for (int i = 0; i < Process.precision; i++) {
             numberOfPrecision *= 10;
-        }return (double)Math.round(number * numberOfPrecision) / numberOfPrecision;
+        }
+        return (double)Math.round(number * numberOfPrecision) / numberOfPrecision;
     }
     
-    /*
     @Override
-    public String toString(){
-        return "\n>> PNO(" + Integer.toString(this.processNo) + ") "+
-               ">> AT(" + Double.toString(this.arrivalTime) + ") BT(" + Double.toString(this.burstTime) + ") Priority(" + Integer.toString(this.priority) + ") " + 
-               ">> CT(" + Double.toString(this.completionTime) + ") TAT(" + Double.toString(this.turnAroundTime) + ") WT(" + Double.toString(this.waitingTime) + ") ";
-    }
-    */
-    
-    @Override
-    public String toString(){
+    public String toString() {
         return Integer.toString(this.processNo) + "\t" +
                Double.toString(this.arrivalTime) + "\t" + 
                Double.toString(this.burstTime) + "\t" + 
                Integer.toString(this.priority) + "\t" + 
-               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.completionTime)) + "\t" + 
-               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.turnAroundTime)) + "\t" + 
-               Double.toString(NumericHandlers.roundTo2DecimalPlaces(this.waitingTime)) + "\n";
+               Double.toString(NumericHandlers.round(this.completionTime, 2)) + "\t" + 
+               Double.toString(NumericHandlers.round(this.turnAroundTime, 2)) + "\t" + 
+               Double.toString(NumericHandlers.round(this.waitingTime, 2)) + "\n";
     }
     
     @Override
-    public boolean equals(Object process){
-        if(process instanceof Process){
+    public boolean equals(Object process) {
+        if (process instanceof Process){
             Process p = (Process)process;
             return this.hashCode() == p.hashCode();
-        }return false;
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
+        
         hash = 67 * hash + this.processNo;
         return hash;
     }

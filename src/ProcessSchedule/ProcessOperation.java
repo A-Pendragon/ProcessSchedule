@@ -1,20 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ProcessSchedule;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-/**
- *
- * @author Chris
- */
 public class ProcessOperation {
-
+    
     private final LinkedList<Process> processInitStorage;
     private final LinkedList<Process> processComputation;
     private final LinkedList<Process> processSchedule;
@@ -26,7 +17,7 @@ public class ProcessOperation {
     private double unitIntervalPrecision;
     private double timeQuantum;
     
-    public ProcessOperation(LinkedList<Process> processList){
+    public ProcessOperation(LinkedList<Process> processList) {
         this.averageTurnAroundTime = this.averageWaitingTime = this.totalProcessTime = 0;
         this.processInitStorage = new LinkedList<>();
         this.processComputation = new LinkedList<>();
@@ -36,7 +27,7 @@ public class ProcessOperation {
         processList.forEach((process) -> { this.processInitStorage.add(new Process(process)); });
     }
     
-    public ProcessOperation(LinkedList<Process> processList, int processPrecision){
+    public ProcessOperation(LinkedList<Process> processList, int processPrecision) {
         Process.precision = processPrecision;
         this.averageTurnAroundTime = this.averageWaitingTime = this.totalProcessTime = 0;
         this.processInitStorage = new LinkedList<>();
@@ -47,7 +38,7 @@ public class ProcessOperation {
         processList.forEach((process) -> { this.processInitStorage.add(new Process(process)); });
     }
     
-    private void reset(){
+    private void reset() {
         this.averageTurnAroundTime = this.averageWaitingTime = this.totalProcessTime = 0;
         this.processComputation.removeAll(this.processComputation);
         this.processSchedule.removeAll(this.processSchedule);
@@ -55,47 +46,54 @@ public class ProcessOperation {
         this.processComputation.forEach((process) -> { this.arrivalQueue.add(new Process(process)); });
     }
     
-    private void initRequestQueue(){
+    private void initRequestQueue() {
         Collections.sort(this.arrivalQueue, new ProcessComparator("firstcomefirstserve"));
         this.requestQueue.add(this.arrivalQueue.removeFirst());
         LinkedList<Process> tempQueue = new LinkedList<>();
-        for(int i = 0; i < this.arrivalQueue.size(); i++){
-            if(this.requestQueue.getFirst().getArrivalTime() == this.arrivalQueue.get(i).getArrivalTime()){
+        for (int i = 0; i < this.arrivalQueue.size(); i++) {
+            if (this.requestQueue.getFirst().getArrivalTime() == this.arrivalQueue.get(i).getArrivalTime()) {
                 this.requestQueue.add(this.arrivalQueue.get(i));
                 tempQueue.add(this.arrivalQueue.get(i));
             }
-        }this.arrivalQueue.removeAll(tempQueue);
+        }
+        this.arrivalQueue.removeAll(tempQueue);
         this.totalProcessTime = this.requestQueue.getFirst().getArrivalTime();
     }
     
     private void setPrecision(){
         LinkedList<Integer> precisionList = new LinkedList<>();
-        for(int i = 0; i < this.processInitStorage.size(); i++){
+        for (int i = 0; i < this.processInitStorage.size(); i++) {
             String process = Double.toString(this.processInitStorage.get(i).getBurstTime());
             precisionList.add(process.length() - process.indexOf(".") - 1);
-        }int numberOfPrecision = Collections.max(precisionList);
+        }
+        int numberOfPrecision = Collections.max(precisionList);
         Process.precision = numberOfPrecision;
         double computedPrecision = 1;
-        for(int i = 0; i < numberOfPrecision; i++){
+        for (int i = 0; i < numberOfPrecision; i++) {
             computedPrecision /= 10;
-        }this.unitIntervalPrecision = computedPrecision;
+        }
+        this.unitIntervalPrecision = computedPrecision;
     }
     
-    private void initNonPreemptiveComputation(String mode){
+    private void initNonPreemptiveComputation(String mode) {
         Collections.sort(this.requestQueue, new ProcessComparator(mode));
         Process firstProcess = this.requestQueue.removeFirst();
         this.totalProcessTime += firstProcess.getBurstTime();      
         this.processSchedule.add(firstProcess);
-        for(int i = 0; i < this.processComputation.size(); i++){
-            if(this.processComputation.get(i).equals(firstProcess)){
-                this.processComputation.get(i).setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime();
+        for (int i = 0; i < this.processComputation.size(); i++) {
+            if (this.processComputation.get(i).equals(firstProcess)) {
+                this.processComputation.get(i).setCompletionTime(this.totalProcessTime)
+                        .computeTurnAroundTime().computeWaitingTime();
                 break;
             }
         }
     }
     
     public void nonPreemptiveSchedule(String mode){
-        if(!(mode.equalsIgnoreCase("firstcomefirstserve") || mode.equalsIgnoreCase("shortestjobfirst") || mode.equalsIgnoreCase("nppriority"))){ throw new UnsupportedOperationException(); }
+        if (!(mode.equalsIgnoreCase("firstcomefirstserve") || mode.equalsIgnoreCase("shortestjobfirst") 
+                || mode.equalsIgnoreCase("nppriority"))) { 
+            throw new UnsupportedOperationException(); 
+        }
         this.reset();
         this.initRequestQueue();
         this.setPrecision();
@@ -109,9 +107,8 @@ public class ProcessOperation {
                     tempQueue.add(this.arrivalQueue.get(i));                    
                 }
             }
-            
             this.arrivalQueue.removeAll(tempQueue); 
-            if(this.requestQueue.isEmpty()){
+            if (this.requestQueue.isEmpty()) {
                 this.requestQueue.add(this.arrivalQueue.removeFirst());
                 this.totalProcessTime = this.requestQueue.getLast().getArrivalTime();
                 continue;
@@ -119,17 +116,20 @@ public class ProcessOperation {
             Collections.sort(this.requestQueue, processComparator);
             Process currentProcess = this.requestQueue.removeFirst();
             this.totalProcessTime += currentProcess.getBurstTime();
-            this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
-            for(int i = 0; i < this.processComputation.size(); i++){
-                if(this.processComputation.get(i).equals(currentProcess)){
-                    this.processComputation.get(i).setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime();
+            this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime)
+                    .computeTurnAroundTime().computeWaitingTime() );
+            for (int i = 0; i < this.processComputation.size(); i++) {
+                if (this.processComputation.get(i).equals(currentProcess)) {
+                    this.processComputation.get(i).setCompletionTime(this.totalProcessTime)
+                            .computeTurnAroundTime().computeWaitingTime();
                     break;
                 }
             }
-        }this.setAverageTime();
+        }
+        this.setAverageTime();
     }
     
-    private void initPreemptiveComputation(String mode){
+    private void initPreemptiveComputation(String mode) {
         LinkedList<Process> tempQueue = new LinkedList<>();
         this.requestQueue.forEach((process) -> { tempQueue.add(new Process(process)); });
         this.requestQueue.removeAll(this.requestQueue);
@@ -151,7 +151,9 @@ public class ProcessOperation {
     } 
    
     public void preemptiveSchedule(String mode){
-        if(!(mode.equalsIgnoreCase("shortestremainingtime") || mode.equalsIgnoreCase("ppriority"))){ throw new UnsupportedOperationException(); }
+        if(!(mode.equalsIgnoreCase("shortestremainingtime") || mode.equalsIgnoreCase("ppriority"))) { 
+            throw new UnsupportedOperationException(); 
+        }
         this.reset();
         this.initRequestQueue();
         this.setPrecision();
@@ -164,7 +166,8 @@ public class ProcessOperation {
                     this.requestQueue.add(this.arrivalQueue.get(i));
                     tempQueue.add(this.arrivalQueue.get(i));
                 }
-            }this.arrivalQueue.removeAll(tempQueue);
+            }
+            this.arrivalQueue.removeAll(tempQueue);
             if(this.requestQueue.isEmpty()){
                 this.requestQueue.add(this.arrivalQueue.removeFirst());
                 this.totalProcessTime = this.requestQueue.getLast().getArrivalTime();
@@ -172,31 +175,34 @@ public class ProcessOperation {
             }
             Collections.sort(this.requestQueue, processComparator);
             Process currentProcess;
-            if(this.requestQueue.getFirst().equals(this.processSchedule.getLast())){
+            if (this.requestQueue.getFirst().equals(this.processSchedule.getLast())) {
                 currentProcess = this.processSchedule.getLast();
                 currentProcess.setBurstTime(currentProcess.getBurstTime() + this.unitIntervalPrecision);
-                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-this.unitIntervalPrecision);
+                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst()
+                        .getBurstTime()-this.unitIntervalPrecision);
                 this.totalProcessTime += this.unitIntervalPrecision;     
                 currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime(); 
-            }else{
+            } else {
                 currentProcess = new Process(this.requestQueue.getFirst());
                 currentProcess.setBurstTime(this.unitIntervalPrecision);
-                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime()-this.unitIntervalPrecision);
+                this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst()
+                        .getBurstTime()-this.unitIntervalPrecision);
                 this.totalProcessTime += currentProcess.getBurstTime();      
-                this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
+                this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime)
+                        .computeTurnAroundTime().computeWaitingTime() );
             }
             
-            if(this.requestQueue.getFirst().getBurstTime() == 0){
-                double arrival = this.requestQueue.getFirst().getArrivalTime();
+            if (this.requestQueue.getFirst().getBurstTime() == 0) {
                 this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1)
                     .setCompletionTime(this.totalProcessTime)
                     .computeTurnAroundTime()
                     .computeWaitingTime();
             }
-        }this.setAverageTime();
+        }
+        this.setAverageTime();
     }
     
-    private double initRoundRobin(){
+    private double initRoundRobin() {
         double timeDivider = this.timeQuantum;
         /*
         this.arrivalQueue.forEach((process) -> { this.requestQueue.add(process); });
@@ -206,26 +212,29 @@ public class ProcessOperation {
         this.requestQueue.add(this.arrivalQueue.removeFirst());
         Process firstProcess = new Process(this.requestQueue.getFirst());
         Process relocateProcess = null;
-        
-        if(firstProcess.getBurstTime() <= timeDivider){
+        if (firstProcess.getBurstTime() <= timeDivider) {
             timeDivider -= firstProcess.getBurstTime();
             this.totalProcessTime += firstProcess.getBurstTime();
             this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1).setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime();  
-            if(timeDivider == 0){ timeDivider = this.timeQuantum; }
-        }else{
+            timeDivider = this.timeQuantum;
+//            if(timeDivider == 0){ timeDivider = this.timeQuantum; }
+        } else {
             firstProcess.setBurstTime(timeDivider);
             this.totalProcessTime += firstProcess.getBurstTime();
             this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime() - timeDivider);
             relocateProcess = this.requestQueue.removeFirst();
             timeDivider = this.timeQuantum;
         }
-        for(int i = 0; i < this.arrivalQueue.size(); i++){
-            if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
+        for (int i = 0; i < this.arrivalQueue.size(); i++) {
+            if (this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime) {
                 this.requestQueue.add(this.arrivalQueue.get(i));
                 tempQueue.add(this.arrivalQueue.get(i));
             }
-        }this.arrivalQueue.removeAll(tempQueue); 
-        if(relocateProcess != null){ this.requestQueue.add(relocateProcess); }
+        }
+        this.arrivalQueue.removeAll(tempQueue); 
+        if (relocateProcess != null) { 
+            this.requestQueue.add(relocateProcess); 
+        }
         this.processSchedule.add(firstProcess);
         return timeDivider;
     }
@@ -236,35 +245,39 @@ public class ProcessOperation {
         this.initRequestQueue();
         this.setPrecision();
         double timeDivider = this.initRoundRobin();
-        while(!(this.requestQueue.isEmpty() && this.arrivalQueue.isEmpty())){
+        
+        while (!(this.requestQueue.isEmpty() && this.arrivalQueue.isEmpty())){
             LinkedList<Process> tempQueue = new LinkedList<>(); 
             Process currentProcess = new Process(this.requestQueue.getFirst());
             Process relocateProcess = null;
             
-            if(currentProcess.getBurstTime() <= timeDivider){
+            if (currentProcess.getBurstTime() <= timeDivider) {
                 timeDivider -= currentProcess.getBurstTime();
                 this.processComputation.get(this.requestQueue.removeFirst().getProcessNo()-1)
                         .setCompletionTime(this.totalProcessTime + currentProcess.getBurstTime() + currentProcess.getArrivalTime())
                         .computeTurnAroundTime().computeWaitingTime();
                 this.totalProcessTime += currentProcess.getBurstTime();
-                if(timeDivider == 0){ timeDivider = this.timeQuantum; }
-            }else{
+                timeDivider = this.timeQuantum;
+//                if(timeDivider == 0){ timeDivider = this.timeQuantum; }
+            } else {
                 currentProcess.setBurstTime(timeDivider);
                 this.totalProcessTime += currentProcess.getBurstTime();
                 this.requestQueue.getFirst().setBurstTime(this.requestQueue.getFirst().getBurstTime() - timeDivider);
                 relocateProcess = this.requestQueue.removeFirst();
                 timeDivider = this.timeQuantum;
             }
-            for(int i = 0; i < this.arrivalQueue.size(); i++){
-            if(this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime){
-                this.requestQueue.add(this.arrivalQueue.get(i));
-                tempQueue.add(this.arrivalQueue.get(i));
+            for (int i = 0; i < this.arrivalQueue.size(); i++) {
+                if (this.arrivalQueue.get(i).getArrivalTime() <= this.totalProcessTime) {
+                    this.requestQueue.add(this.arrivalQueue.get(i));
+                    tempQueue.add(this.arrivalQueue.get(i));
+                }
             }
-            }this.arrivalQueue.removeAll(tempQueue); 
+            this.arrivalQueue.removeAll(tempQueue); 
             if(relocateProcess != null){ this.requestQueue.add(relocateProcess); }
-            this.processSchedule.add( currentProcess.setCompletionTime(this.totalProcessTime).computeTurnAroundTime().computeWaitingTime() );
-            
-        }this.setAverageTime();
+            this.processSchedule.add(currentProcess.setCompletionTime(this.totalProcessTime)
+                    .computeTurnAroundTime().computeWaitingTime());
+        }
+        this.setAverageTime();
     }
    
     private void setAverageTime(){
@@ -280,34 +293,24 @@ public class ProcessOperation {
     
     private double computeAverageTime(ArrayList<Double> timeList){
         double totalTime = 0;
+        
         totalTime = timeList.stream().map((time) -> time).reduce(totalTime, (accumulator, _item) -> accumulator + _item);
-        return this.round(totalTime/timeList.size());
+        return this.round(totalTime / timeList.size());
     }
     
     private double round(double number){
         int numberOfPrecision = 1;
+        
         for(int i = 0; i < Process.precision; i++){
             numberOfPrecision *= 10;
-        }return (double)Math.round(number * numberOfPrecision) / numberOfPrecision;
+        }
+        return (double)Math.round(number * numberOfPrecision) / numberOfPrecision;
     }
-    
-    /*
-    @Override
-    public String toString(){
-        return "\nInitial Process Value:" + this.processInitStorage +
-               "\nComputed Process Value:" + this.processComputation +
-               "\nScheduled Process Value:" + this.processSchedule +
-               "\nTotal Processed Time(" + Double.toString(this.totalProcessTime) + ")" +
-               "\nAverage Turn Around Time(" + Double.toString(this.averageTurnAroundTime) + ")" +
-               "\nAverage Waiting Time(" + Double.toString(this.averageWaitingTime) + ")" +
-               "\nCurrent Time Quantum (if implemented)(" + Double.toString(this.timeQuantum) + ")";
-    }
-    */
     
     @Override
     public String toString(){
         String formatedString = this.processComputation.toString()
-            .replace("[", " ")  //remove the right bracket 
+            .replace("[", " ") //remove the right bracket 
             .replace(",", "")  //remove the commas                                   
             .replace("]", ""); //remove the left bracket
         return formatedString;
