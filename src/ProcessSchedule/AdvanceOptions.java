@@ -24,11 +24,9 @@ public class AdvanceOptions {
     private final JComboBox priorityComboBox;
     private final JButton aoButton;
     
-    public AdvanceOptions(Configurations config, 
-            JLabel atLabel, JLabel btLabel, 
-            JLabel atFirstLabel, JLabel atSecondLabel,
-            JLabel btFirstLabel, JLabel btSecondLabel, 
-            JComboBox atComboBox, JComboBox btComboBox, 
+    public AdvanceOptions(Configurations config, JLabel atLabel, JLabel btLabel, 
+            JLabel atFirstLabel, JLabel atSecondLabel, JLabel btFirstLabel, 
+            JLabel btSecondLabel, JComboBox atComboBox, JComboBox btComboBox, 
             JTextField atFirstTextField, JTextField atSecondTextField, 
             JTextField btFirstTextField, JTextField btSecondTextField, 
             JLabel priorityLabel, JComboBox priorityComboBox, JButton aoButton) {
